@@ -1,0 +1,71 @@
+<div th:fragment="supervisorBody">
+	<div class="row">
+		<div
+			class="paginationImage col-12 col-sm-12 col-lg-6 col-xl-6 pb-4 pt-4"
+			th:each=supervisorImage:${supervisorImages}>
+			<div class="paginationImage col-lg-12">
+				<div class="savedProjectColSize" style="text-align: center;">
+					<div class="researchGroup pt-2 pb-2" th:id="${supervisorImage.key}"
+						th:text="${supervisorImage.key.groupName}"></div>
+					<!--/Research group name div closing-->
+					<div class="row">
+						<div class="paginationImage col-6 col-sm-6 col-lg-4 col-lg-4"
+							th:if="${#lists.size(supervisorImage.value) > 0}"
+							th:each="imageMap: ${supervisorImage.value}">
+							<a th:href=@{/supervisorProfile(id=${imageMap.key.userId})}>
+								<img class="allSupervisorImages mr-3 ml-3 mb-3 mt-3"
+								th:src="@{'/userImages/' + ${imageMap.value}}">
+							</a> <br> <a type="button"
+								class="ml-3 mb-3 mt-3 nameButton btn btn-secondary"
+								th:if="${imageMap} != null" th:title="${imageMap.key.email}"
+								th:text="${imageMap.key.firstName} + ' ' + ${imageMap.key.lastName}"
+								th:href=@{/supervisorProfile(id=${imageMap.key.userId})}> </a>
+						</div>
+						<!--/supervisor image and name div closing-->
+						<div class="mr-3" style="width: 100%;"
+							th:each="groupPagesMap :${groupPagesMap}">
+							<div id="customPagination"
+								th:if="${groupPagesMap.key} == ${supervisorImage.key.groupId} ">
+								<ul id="ulPagination" class="pl-3 pr-3 pb-3 pt-3 pagination"
+									style="justify-content: flex-end;">
+									<li id="prev" style="display: none;">
+										<button id="prevButton" class="page-link"><<</button>
+									</li>
+									<li th:each=pageNumber:${groupPagesMap.value}
+										th:class="${pageNumber}==${selectedMap.get(groupPagesMap.key)} ? active">
+										<a class="page-link" th:text="${pageNumber}"
+										href="javascript:"
+										th:onclick="'javascript:DoPost( \'' + ${pageNumber} + '\' ,\'' +  ${supervisorImage.key.groupId} + '\');'">
+									</a>
+									</li>
+								</ul>
+							</div>
+						</div>
+						<!--/pagination div closing-->
+						<div class="noProjects col-lg-4"
+							th:if="${#lists.size(supervisorImage.value) <= 0}">No
+							supervisors in the research group</div>
+					</div>
+				</div>
+			</div>
+			<!--/inner col clsoing-->
+		</div>
+		<!--outer col closing-->
+		<form id="paginationForm" method="post" th:action="@{/supervisor}">
+			<input type="hidden" name="previouslySelectPages"
+				th:value="${previouslySelectPages}"> <input type="hidden"
+				name="isStudentsSupervisor" th:value="${isStudentsSupervisor}">
+			<input type="hidden" name="selectedGroupId" id="selectedGroupId"
+				value="0"> <input type="hidden" name="selectedPage"
+				id="selectedPage" value="0">
+		</form>
+	</div>
+	<!-- /row closing
+        </form>-->
+	<script src="../../static/js/CurrentNavLink.js"
+		th:src="@{js/CurrentNavLink.js}"></script>
+	<script src="../../static/js/Supervisor.js"
+		th:src="@{js/Supervisor.js}"></script>
+	<script src="../../static/js/CustomisePagination.js"
+		th:src="@{js/CustomisePagination.js}"></script>
+</div>

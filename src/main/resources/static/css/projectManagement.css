@@ -1,0 +1,154 @@
+@charset "UTF-8";
+
+/**
+* styles for tags with class customManagementRow
+*/
+#customManagementRow {
+	margin-left: 0px;
+	margin-right: 0px;
+	padding-left: 0px;
+	padding-right: 0px;
+	padding-bottom: 1%;
+}
+
+/**
+* styles for tags with class rowButton
+*/
+.rowButton {
+	margin-left: 4%;
+	margin-right: 4%;
+	margin-bottom: 1%;
+	margin-top: 1%;
+	border: none;
+	background-color: darkgray;
+	font-family: poppins;
+	font-size: 23px;
+	font-weight: bold;
+	text-decoration: none;
+	color: black;
+}
+
+/**
+* styles for tags with class proposalManagementButton on hover,focus, and active
+*/
+.rowButton:hover, .rowButton:focus, .rowButton:active {
+	text-decoration: none;
+	color: black;
+}
+
+/**
+* styles for tag with id proposalManagementButton
+*/
+#proposalManagementButton {
+	background-color: darkblue;
+	color: white;
+}
+
+/**
+* styles for tag th
+*/
+th {
+	font-family: poppins;
+	font-size: 20px;
+	background-color: darkblue;
+	color: white;
+}
+
+/**
+* styles for tags with class customSearch
+*/
+.customSearch {
+	width: 30% !important;
+	position: relative;
+}
+
+/**
+* styles for tags with class customManagementFilters
+*/
+.customManagementFilters {
+	padding-bottom: 1% !important;
+}
+
+/**
+* styles for tags with class edit
+*/
+.edit {
+	font-size: 35px !important;
+	color: darkblue;
+}
+
+/**
+* styles for tags with class dot
+*/
+.dot {
+	height: 20px;
+	width: 20px;
+	background-color: green;
+	border-radius: 50%;
+	display: inline-block;
+}
+
+/**
+* styles for tags with class pointer
+*/
+.pointer {
+	cursor: pointer !important;
+}
+
+/**
+*overrides the above properties if screen max-width is 1060px.
+*/
+@media screen and (max-width:1060px) {
+	.rowButton {
+		font-size: 17px !important;
+	}
+}
+
+/**
+*overrides the above properties if screen max-width is 910px.
+*/
+@media screen and (max-width:910px) {
+	.rowButton {
+		font-size: 13px !important;
+	}
+}
+
+/**
+*overrides the above properties if screen max-width is 770px.
+*/
+@media screen and (max-width:790px) {
+	.customSearch {
+		width: 100% !important;
+		padding-bottom: 10px;
+	}
+	.rowButton {
+		font-size: 13px !important;
+	}
+	.customSubFilter {
+		padding-bottom: 10px !important;
+	}
+}
+
+/**
+*overrides the above properties if screen max-width is 480px.
+*/
+@media screen and (max-width:480px) {
+	.rowButton {
+		font-size: 15px;
+	}
+	.filter-option-inner {
+		font-size: medium;
+	}
+}
+
+/**
+*overrides the above properties if screen max-width is 350px.
+*/
+@media screen and (max-width:350px) {
+	.rowButton {
+		font-size: 13px;
+	}
+	.filter-option-inner {
+		font-size: medium;
+	}
+}

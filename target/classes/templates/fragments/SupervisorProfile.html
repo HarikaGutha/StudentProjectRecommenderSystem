@@ -1,0 +1,224 @@
+<div th:fragment="supervisorBody">
+	<div style="background: white; border-radius: 20px;" class="row">
+		<div class="col-lg-2" th:each="userMap: ${userMap}">
+			<img class="profileIcon pt-4 pb-3"
+				th:src="@{'/userImages/' + ${userMap.value}}" />
+		</div>
+		<!-- /image div closing -->
+		<div class="col-lg-10 pb-3">
+			<div class="row">
+				<p class="profileName" th:each="userMap: ${userMap}"
+					th:text="${userMap.key.firstName} + ' ' + ${userMap.key.lastName}"></p>
+				<p th:each="userMap: ${userMap}"
+					th:if="${currentUserName != userMap.key.username}"
+					class="mx-2 my-2" style="display: inline">
+					<a th:href="'mailto:'+${userMap.key.email}" style="display: inline">
+						<i class="px-2 py-2 fa fa-envelope-o fa-2x"
+						style="color: white; background: navy; border-radius: 10px;"
+						title="Contact Supervisor" aria-hidden="true"></i>
+					</a>
+				</p>
+			</div>
+			<!-- /name div closing -->
+			<div class="row">
+				<div class="col-lg-4"
+					th:each="allResearchGroup: ${allResearchGroups}">
+					<img class="researchIcon" style="width: 75px"
+						th:src="@{'/researchGroupImages/' + ${allResearchGroup.value}}" />
+					<p class="researchIconName" th:text="${allResearchGroup.key}"></p>
+				</div>
+			</div>
+			<!-- /research groups div closing -->
+		</div>
+		<!-- /information div closing -->
+	</div>
+	<!-- first row closing -->
+
+	<div id="carouselIndicators" class="carousel slide"
+		data-ride="carousel">
+		<div
+			class="publication imageSlider paginationImage py-3 sliderMargin mt-4 mb-2 sliderBackground"
+			th:text="'Some of ' + ${firstName} + '\'s Projects'"></div>
+		<!--/some of your projects div closing-->
+		<div class="py-3 sliderMargin mb-3 sliderBackground row">
+			<div th:if="${#lists.size(someProjects) > 0}"
+				class="row tagCloudPadding py-3 carousel-item"
+				th:each="project : ${someProjects}">
+				<div class="row pxPadding mb-3" style="background: aliceblue;">
+					<span class="px-2"
+						th:switch="${project.projectState == null ? '' :project.projectState.state}"
+						th:title="${project.projectState.state}"> <i
+						th:case="Available" class="fas fa-circle" style="color: green"></i>
+						<i th:case="Taken" class="fas fa-circle" style="color: red"></i> <i
+						th:case="Historic" class="fas fa-circle" style="color: grey"></i>
+					</span>
+					<p style="display: inline">
+						<a class="projectTitle" th:value="${project.projectId}"
+							th:text="${project.title}"
+							title="Click to view project description"></a>
+					</p>
+				</div>
+				<!-- /title closing -->
+				<div class="row sliderMargin1Rem pxChildPadding my-3">
+					<div class="col-12 col-sm-12 col-lg-9 col-xl-9 mb-3 mobilePadding">
+						<p class="tagCloudPadding py-3 projectDescription heightMatch"
+							th:value="${project.projectId}" style="background: aliceblue;"
+							th:text="${project.description}"></p>
+					</div>
+					<!--/project description div closing-->
+					<div
+						class="heightMatch mobilePadding col-12 col-sm-12 col-lg-3 col-xl-3 mb-3"
+						style="background: aliceblue;">
+						<span class="boldLook">Dissertation Category:</span>
+						<p style="display: inline-block"
+							th:each="dissertationModule, iterStat : ${project.dissertationModules}">
+							<span
+								th:text="!${iterStat.last} ? ${dissertationModule.dissertationModule} + ',' : ${dissertationModule.dissertationModule}"></span>
+						</p>
+						<br> <span class="boldLook">Relevant Modules:</span>
+						<p style="display: inline-block"
+							th:each="previousModules, iterStat : ${project.previousModules}">
+							<span
+								th:text="!${iterStat.last} ? ${previousModules.moduleId} + ',' : ${previousModules.moduleId}"></span>
+						</p>
+					</div>
+					<!--dissertation category and relevant modules div closing-->
+				</div>
+			</div>
+			<div th:if="${#lists.size(someProjects) <= 0}"
+				class="noProjects row px-3 py-3 mb-4 carousel-item">No
+				projects available</div>
+		</div>
+		<ol class="carousel-indicators">
+			<li data-target="#carouselIndicators" data-slide-to="0"
+				class="active"></li>
+			<li data-target="#carouselIndicators" data-slide-to="1"></li>
+			<li data-target="#carouselIndicators" data-slide-to="2"></li>
+			<li data-target="#carouselIndicators" data-slide-to="3"></li>
+		</ol>
+		<!--/navigation for image slider-->
+	</div>
+	<div class="row tagCloudPadding pb-3">
+		<div class="paginationImage col-12 col-lg-6 col-xl-6 mb-3">
+			<div
+				class="profileBackground paginationImage col-12 col-lg-12 col-xl-12">
+				<div style="height: 400px; overflow-y: auto;">
+					<div class="row px-3 py-3">
+						<div
+							class="subHeaderParentDiv paginationImage col-12 col-sm-12 col-lg-12 col-xl-12 mb-3">
+							<div class=" subHeaderChildDiv px-3 py-3"
+								style="color: black !important"
+								th:text="${'Research Publications ' + '(' + publicationsCount + ')'}"></div>
+						</div>
+						<div class="paginationImage col-12 col-lg-12 col-xl-12"
+							th:if="${#lists.size(allResearchPublications) > 0}"
+							th:each="allResearchPublication : ${allResearchPublications}">
+							<p>
+								<a class="publication"
+									th:text="${allResearchPublication.publicationName}"
+									th:href="${allResearchPublication.publicationSource}"
+									title="click to view research publication" target="_blank"></a>
+							</p>
+							<hr class="lineBreak">
+						</div>
+						<div class="noProjects col-12 col-lg-12 col-xl-12"
+							th:if="${#lists.size(allResearchPublications) <= 0}">No
+							research publications available</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<!--/Research publications div closing-->
+		<div class="paginationImage col-12 col-lg-6 col-xl-6">
+			<div
+				class="profileBackground paginationImage col-12 col-lg-12 col-xl-12">
+				<div style="height: 400px; overflow-y: auto;">
+					<div class="row px-3 py-3">
+						<div
+							class="subHeaderParentDiv col-12 col-sm-12 col-lg-12 col-xl-12">
+							<div class=" subHeaderChildDiv px-3 py-3"
+								style="color: black !important">Supervised Project Topics
+								by Number</div>
+						</div>
+					</div>
+					<div id="tags"></div>
+				</div>
+			</div>
+		</div>
+		<!--/tagcloud div closing-->
+	</div>
+	<!--publications and tagcloud row closing-->
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/jqcloud/1.0.4/jqcloud-1.0.4.min.js"></script>
+	<script src="../../static/js/Supervisor.js"
+		th:src="@{js/Supervisor.js}" th:inline="javascript"></script>
+	<script src="../../static/js/SupervisorProfile.js"
+		th:src="@{js/SupervisorProfile.js}" th:inline="javascript"></script>
+	<script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
+	<script type="text/javascript" src="../../static/js/d3.layout.cloud.js"
+		th:src="@{js/d3.layout.cloud.js}"></script>
+	<script src="../../static/js/CurrentNavLink.js"
+		th:src="@{js/CurrentNavLink.js}"></script>
+	<script th:inline="javascript">
+        var fill = d3.scale.category20();
+        var wordsArray = [];
+        var projectsCount = /*[[${projectsCountPerTopic}]]*/
+            for (i = 0; i < projectsCount.length; i++) {
+                var wordObject = {
+                    'word': (Object.keys(projectsCount[i]).toString()),
+                    'weight': ((parseInt(Object.values(projectsCount[i]))) * 7)
+                };
+                wordsArray.push(wordObject);
+            }
+        if (projectsCount.length <= 0) {
+            document.getElementById("tags").innerText = "No projects uploaded";
+            document.getElementById("tags").classList.add("noProjects");
+        } else {
+            d3.layout.cloud().size([500, 500])
+                .words(wordsArray.map(function(d) {
+                    return {
+                        text: d.word,
+                        size: d.weight
+                    };
+                }))
+                .padding(5)
+                .rotate(function() {
+                    return ~~(Math.random() * 2) * 90;
+                })
+                .font("Impact")
+                .fontSize(function(d) {
+                    return d.size + 2;
+                })
+                .on("end", draw)
+                .start();
+
+            function draw(words) {
+                d3.select("#tags")
+                    .attr("width", 500)
+                    .attr("height", 500)
+                    .append("g")
+                    .attr("transform", "translate(150,150)")
+                    .selectAll("a")
+                    .data(words)
+                    .enter().append("text")
+                    .style("font-size", function(d) {
+                        return (d.size + 2) + "px";
+                    })
+                    .style("font-family", "poppins")
+                    .style("font-weight", "bold")
+                    .style("fill", function(d, i) {
+                        return fill(i);
+                    })
+                    .attr("text-anchor", "middle")
+                    .attr("transform", function(d) {
+
+                        return "translate(" + [d.x, d.y] + ")rotate(" + d.rotate + ")";
+                    })
+                    .text(function(d) {
+                        return d.text + '    ';
+                    });
+            }
+        }
+    </script>
+
+</div>

@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/studentFragments/StudentLayout}">
+
+<head>
+</head>
+
+<body>
+	<div layout:fragment="content" class="container-fluid pl-3 pr-3 pt-3">
+		<div class="row">
+			<div class="col-12 col-lg-4 col-xl-4 pb-3"
+				style="text-align: center;">
+				<a class="btn btn-primary px-3 py-3 studentDashboardButtons"
+					style="background: #B0C4DE"
+					th:text="${'Available projects '+ '(' + availableProjects + ')'}"
+					th:href="@{/allProjects}"
+					title="Click to navigate to all projects page"></a>
+			</div>
+			<div class="col-12 col-lg-4 col-xl-4 pb-3"
+				style="text-align: center;">
+				<a class="btn btn-primary px-3 py-3 studentDashboardButtons"
+					style="background: lightblue"
+					th:text="${'New projects from last seen '+ '(' + projectsFromLastLogin + ')'}"></a>
+			</div>
+			<div class="col-12 col-lg-4 col-xl-4" style="text-align: center;">
+				<a class="btn btn-primary px-3 py-3 studentDashboardButtons"
+					style="background: lightgrey"
+					th:text="${'Total Research Groups '+ '(' + researchGroups + ')'}"></a>
+			</div>
+		</div>
+		<!--/dashboard button closing-->
+		<br>
+		<div class="row pt-3 pb-3">
+			<div class="col-lg-6 col-xl-6">
+				<div class=" barGraphParentRow col-lg-12 col-xl-12">
+					<div class="row pt-3">
+						<div
+							class="subHeaderParentDiv col-12 col-sm-12 col-lg-12 col-xl-12">
+							<div class=" subHeaderChildDiv px-3 py-3">Number of
+								Projects Per Topic</div>
+						</div>
+						<div class="col-12 col-sm-12 col-lg-12 col-xl-12 pt-3">
+							<div class="sortDiv px-3 py-3">
+								<label style="color: #0C57A9;">SORT:</label>
+								<button class="iconButton" onclick="displayAscendingChart()">
+									<i class="fa fa-sort-amount-asc fa-lg" aria-hidden="true"></i>
+								</button>
+								<button class="iconButton" onclick="displayDescendingChart()">
+									<i class="fa fa-sort-amount-desc fa-lg" aria-hidden="true"></i>
+								</button>
+							</div>
+						</div>
+						<br>
+						<div id="chartWrapper" class="chartWrapper"
+							style="height: 500px; width: 100%; overflow-y: auto; position: relative;">
+							<div id="ascendingChartContainer"
+								style="height: 500px; width: 100%;">NoProjects</div>
+							<div id="descendingChartContainer"
+								style="height: 500px; width: 100%; display: none;"></div>
+						</div>
+					</div>
+				</div>
+				<!--/dashboard bargrapg closing-->
+			</div>
+			<br>
+			<div class="col-12 col-lg-6 col-xl-6">
+				<div class="col-12 col-lg-12 col-xl-12">
+					<div class="barGraphParentRow row pt-3">
+						<div
+							class="subHeaderParentDiv col-12 col-sm-12 col-lg-12 col-xl-12">
+							<div class=" subHeaderChildDiv px-3 py-3">Your Saved
+								Projects</div>
+						</div>
+						<div th:if="${#lists.size(savedProjects) > 0}"
+							class="savedProjects col-lg-6 col-xl-6 pb-3 pt-3"
+							th:each="project : ${savedProjects}">
+							<div class="dashboardSavedProjects col-lg-12 col-xl-12">
+								<div class="row px-3 py-3">
+									<div>
+										<span
+											th:switch="${project.projectState == null ? '' :project.projectState.state}"
+											th:title="${project.projectState.state}"> <i
+											th:case="Available" class="fas fa-circle"
+											style="color: green" title="Available"></i> <i
+											th:case="Taken" class="fas fa-circle" style="color: red"
+											title="Taken"></i> <i th:case="Historic"
+											class="fas fa-circle" style="color: grey" title="Historic"></i>
+										</span>
+										<p style="display: inline">
+											<a
+												th:href="@{/individualProjectDescription(id=${project.projectId})}"
+												class="projectTitle" th:value="${project.projectId}"
+												th:text="${project.title}"
+												title="click the title to view project description"></a> <i
+												th:id="save +${project.projectId} "
+												th:onclick=" |save('${project.projectId}')| "
+												style="color: orange"
+												class="fa fa-heart fa-lg pl-4 saveSymbol" aria-hidden="true">
+											</i>
+										</p>
+									</div>
+								</div>
+								<!-- /title closing -->
+								<div class="row">
+									<i class="fa fa-book pl-3 pt-1" aria-hidden="true"></i>&nbsp;&nbsp;
+									<p style="display: inline-block" class="topicAreas"
+										th:each="topics, iterStat : ${project.topics}">
+										<span
+											th:text="!${iterStat.last} ? ${topics.moduleName} + ',' : ${topics.moduleName}"></span>
+									</p>
+								</div>
+								<!-- /topic area closing -->
+								<div class="row">
+									<i class="fa fa-calendar pl-3 pt-1" aria-hidden="true"></i>&nbsp;&nbsp;
+									<p style="display: inline-block" class="datePosted"
+										th:value="${project.datePosted}"
+										th:text="${#dates.format(project.datePosted, 'dd-MMMM-yyyy')}"></p>
+								</div>
+								<!--  /date posted closing-->
+								<div class="row">
+									<i class="fa fa-user pl-3 pt-1" aria-hidden="true"></i>&nbsp;&nbsp;
+									<p th:title="${project.userId.email}"
+										th:text="${project.userId.firstName} + ' ' + ${project.userId.lastName}"></p>
+								</div>
+							</div>
+						</div>
+						<!--/dashboard sabedprojects div closing-->
+						<div th:if="${#lists.size(savedProjects) <= 0}"
+							class="savedProjects col-lg-6 col-xl-6 pb-3 pt-3"
+							style="text-align: center; margin-left: auto; margin-right: auto;">
+							No saved projects</div>
+					</div>
+					<br>
+					<div class="barGraphParentRow row pt-3">
+						<div
+							class="subHeaderParentDiv col-12 col-sm-12 col-lg-12 col-xl-12">
+							<div class=" subHeaderChildDiv px-3 py-3">Projects by
+								Supervisors</div>
+						</div>
+						<br>
+						<p class="col-12 col-sm-12 col-lg-12 col-xl-12 px-3 pt-3">Search
+							projects by selecting supervisors</p>
+						<div class="col-12 col-sm-12 col-lg-12 col-xl-12">
+							<select id="supervisorsDropdown"
+								class="px-3 py-3 selectpicker input-small"
+								title="Select supervisors" data-live-search="true"
+								th:onchange="displayProjects()">
+								<option th:each="localUser : ${userByRole}"
+									th:value="${localUser.userId}"
+									th:text="${localUser.firstName +' ' + localUser.lastName}"></option>
+							</select>
+							<div id="projects"></div>
+							<div id="customPagination"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<!--/dashboard filter by supervisor div closing-->
+			<form id="getProject" th:action="@{/project}" method="post">
+				<input type="hidden" name="selectedModule" id="selectedModule"
+					value="">
+			</form>
+		</div>
+		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+		<script th:inline="javascript">
+            /*<![CDATA[*/
+            var sortingOrder;
+            var projectCount = /*[[${projectsPerModules}]]*/ ;
+            var ascendingProjects = /*[[${projectsPerModules}]]*/ ;
+            var descendingProjects = /*[[${projectsPerModules}]]*/ ;
+            if (projectCount.length > 100) {
+                if (document.getElementById("ascendingChartContainer").style.display == "") {
+                    document.getElementById("ascendingChartContainer").style.height = "2000px";
+                } else if (document.getElementById("descendingChartContainer").style.display == "") {
+                    document.getElementById("descendingChartContainer").style.height = "2000px";
+                }
+            } else if (projectCount.length > 70) {
+                if (document.getElementById("ascendingChartContainer").style.display == "") {
+                    document.getElementById("ascendingChartContainer").style.height = "1500px";
+                } else if (document.getElementById("descendingChartContainer").style.display == "") {
+                    document.getElementById("descendingChartContainer").style.height = "1500px";
+                }
+            } else if (projectCount.length > 50) {
+                if (document.getElementById("ascendingChartContainer").style.display == "") {
+                    document.getElementById("ascendingChartContainer").style.height = "1000px";
+                } else if (document.getElementById("descendingChartContainer").style.display == "") {
+                    document.getElementById("descendingChartContainer").style.height = "1000px";
+                }
+            } else if (projectCount.length > 30) {
+                if (document.getElementById("ascendingChartContainer").style.display == "") {
+                    document.getElementById("ascendingChartContainer").style.height = "700px";
+                } else if (document.getElementById("descendingChartContainer").style.display == "") {
+                    document.getElementById("descendingChartContainer").style.height = "700px";
+                }
+            }
+            /*
+             * inline function to sort bargraphs.
+             */
+            window.onload = function() {
+                sortAscending(ascendingProjects);
+                sortDescending(descendingProjects);
+                displayAscendingChart();
+            }
+
+            /*
+             * inline function to sort bar graph ascending.
+             */
+            function sortAscending(ascendingProjects) {
+                do {
+                    var swap = false;
+                    for (var i = 0; i < ascendingProjects.length - 1; i++) {
+                        if (ascendingProjects[i].y > ascendingProjects[i + 1].y) {
+                            var temp = ascendingProjects[i];
+                            ascendingProjects[i] = ascendingProjects[i + 1];
+                            ascendingProjects[i + 1] = temp;
+                            swap = true;
+                        }
+                    }
+                }
+                while (swap);
+            }
+
+            /*
+             * inline function to sort bar graph descending.
+             */
+            function sortDescending(descendingProjects) {
+                do {
+                    var swap = false;
+                    for (var i = descendingProjects.length - 1; i >= 0; i--) {
+                        if (i != 0) {
+                            if (descendingProjects[i].y > descendingProjects[i - 1].y) {
+                                var temp = descendingProjects[i];
+                                descendingProjects[i] = descendingProjects[i - 1];
+                                descendingProjects[i - 1] = temp;
+                                swap = true;
+                            }
+                        }
+                    }
+                }
+                while (swap);
+            }
+
+            /*
+             * inline function to display ascending bar graph.
+             */
+            function displayAscendingChart() {
+                if (document.getElementById("ascendingChartContainer").style.display == "none") {
+                    document.getElementById("ascendingChartContainer").style.display = "";
+                    document.getElementById("descendingChartContainer").style.display = "none";
+                }
+                if (ascendingProjects.length == 0) {
+                    document.getElementById("ascendingChartContainer").innnerHTML = "No projects Available";
+                    document.getElementById("ascendingChartContainer").classList.add("noProjects");
+                } else {
+                    var ascendingChart = new CanvasJS.Chart("ascendingChartContainer", {
+                        animationEnabled: true,
+                        axisY: {
+                            includeZero: false
+                        },
+                        axisX: {
+                            interval: 1,
+                            labelFontFamily: "poppins",
+                        },
+                        axisY: {
+                            labelFontFamily: "poppins",
+                            labelAngle: 135,
+                            gridThickness: 0,
+                        },
+                        data: [{
+                            type: "bar",
+                            color: "#FF9999",
+                            click: onClick,
+                            dataPoints: ascendingProjects,
+                        }]
+                    });
+                    ascendingChart.render();
+                }
+
+            }
+
+            /*
+             * inline function to display descending bar graph.
+             */
+            function displayDescendingChart() {
+                if (document.getElementById("descendingChartContainer").style.display == "none") {
+                    document.getElementById("descendingChartContainer").style.display = "";
+                    document.getElementById("ascendingChartContainer").style.display = "none";
+                }
+                if (descendingProjects.length == 0) {
+                    document.getElementById("descendingChartContainer").innnerHTML = "No projects Available";
+                    document.getElementById("descendingChartContainer").classList.add("noProjects");
+                } else {
+                    var descendingChart = new CanvasJS.Chart("descendingChartContainer", {
+                        animationEnabled: true,
+                        axisY: {
+                            includeZero: false
+                        },
+                        axisX: {
+                            interval: 1,
+                            labelFontFamily: "poppins",
+                        },
+                        axisY: {
+                            labelFontFamily: "poppins",
+                            labelAngle: 135,
+                            gridThickness: 0,
+                        },
+                        data: [{
+                            type: "bar",
+                            color: "#FF9999",
+                            click: onClick,
+                            dataPoints: descendingProjects,
+                        }]
+                    });
+                    descendingChart.render();
+                }
+            }
+
+            /*
+             * on click on bars of bar graph.
+             */
+            function onClick(e) {
+                setModules(e.dataPoint.label);
+            }
+
+            /*]]>*/
+            $('.dashboardSavedProjects').matchHeight();
+        </script>
+		<script src="../../static/js/AllProjects.js"
+			th:src="@{js/AllProjects.js}"></script>
+		<script src="../../static/js/CurrentNavLink.js"
+			th:src="@{js/CurrentNavLink.js}"></script>
+		<script src="../../static/js/SaveProject.js"
+			th:src="@{js/SaveProject.js}"></script>
+		<script src="../../static/js/StudentDashboard.js"
+			th:src="@{js/StudentDashboard.js}"></script>
+		<script src="../../static/js/CustomisePagination.js"
+			th:src="@{js/CustomisePagination.js}"></script>
+	</div>
+</body>
+
+</html>

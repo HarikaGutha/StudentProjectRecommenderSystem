@@ -1,0 +1,30 @@
+@charset "UTF-8";
+
+/**
+* styles for tags with class savedProjectColSize
+*/
+.savedProjectColSize {
+	background-color: white;
+	border-radius: 20px;
+}
+
+/**
+* styles for tags with class savedProjectDescription
+*/
+.savedProjectDescription {
+	overflow: hidden;
+	font-family: poppins;
+	font-size: 16px;
+}
+
+/**
+* styles for tags with class noProjects
+*/
+.noProjects {
+	text-align: center;
+	margin-left: auto;
+	margin-right: auto;
+	font-family: poppins;
+	font-size: 20px;
+	font-weight: bold;
+}

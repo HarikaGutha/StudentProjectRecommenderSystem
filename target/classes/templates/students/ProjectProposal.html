@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/studentFragments/StudentLayout}">
+
+<head>
+</head>
+
+<body>
+	<div layout:fragment="content" class="container-fluid">
+		<form id="upload" th:action="@{/submitProject}" th:object="${project}"
+			method="post">
+
+			<div class="form-group row customUploadRow pt-4">
+				<label class="col-8 col-sm-8 col-lg-2 col-xl-2 col-form-label"
+					title="Select a title, formulate it as concise as possible max length is 255 characters">
+					Title*</label>
+				<div class="col-12 col-sm-12 col-lg-10 col-xl-10">
+					<textarea class="form-control" th:field="*{title}"> </textarea>
+					<P id="titleError" style="display: none; color: red;">Title
+						should be less than 255 Characters</P>
+				</div>
+				<!--/ title form control div closing-->
+			</div>
+			<!--/ title row div closing-->
+
+			<div class="form-group row customUploadRow">
+				<label class="col-8 col-sm-8 col-lg-2 col-xl-2 col-form-label"
+					title="Describe the project in 5000 characters, include all research objectives">
+					Description*</label>
+				<div class="col-12 col-sm-12 col-lg-10 col-xl-10">
+					<textarea rows="8" class="form-control" th:field="*{description}"> </textarea>
+					<P id="descriptionError" style="display: none; color: red;">Description
+						should be less than 5000 Characters</P>
+				</div>
+				<!--/ description form control div closing-->
+			</div>
+			<!--/ description row div closing-->
+
+			<div class="form-group row customUploadRow">
+				<label class="col-8 col-sm-8 col-lg-2 col-xl-2col-form-label"
+					title="Provide additional informtaion if any in 3000 characters">
+					Additional Information</label>
+				<div class="col-12 col-sm-12 col-lg-10 col-xl-10">
+					<textarea id="information" rows="5" class="form-control"
+						th:field="*{additionalInformation}"> </textarea>
+					<P id="informationError" style="display: none; color: red;">Additional
+						information should not be more than 3000 characters</P>
+				</div>
+				<!--/ additional information form control div closing-->
+			</div>
+			<!--/ additional information row div closing-->
+
+			<div class="form-group row customUploadRow" id="upload">
+				<!--/-------------------------projectType starting----------------------->
+				<div
+					class="collaborationCSS col-sm-5 col-md-5 col-lg-3 col-xl-3 mb-3">
+					<div id="radioDiv" class="form-group row radio customUploadRow">
+						<label id="projectType" class="col-8 col-form-label"
+							title="Check the project type"> Project Type*</label>
+					</div>
+					<div>
+						<label class="col-8 col-sm-2 form-check-label"
+							title="Check if the project type is individual"> <input
+							type="radio" name="projectType" class="col-sm-3 form-check-input"
+							id="individual" value="Individual" th:field="*{projectType}">
+							Individual
+						</label>
+					</div>
+					<div>
+						<label class="col-8 col-sm-2 form-check-label"
+							title="Check if the project type id group"> <input
+							type="radio" name="projectType" class="col-sm-3 form-check-input"
+							id="group" value="Individual" th:field="*{projectType}">
+							Group
+						</label>
+					</div>
+					<P id="typeError" style="display: none; color: red;">Please
+						select project type</P>
+				</div>
+
+				<!--/-------------------------collaboration ending----------------------->
+
+				<!--/-------------------------topics drop down starting----------------------->
+				<div class="col-sm-5 col-md-5 col-lg-3 col-xl-3 mb-3">
+					<label class="form-check-label">Topics*</label> <br> <select
+						id="topics" class="selectpicker input-small" title="select topics"
+						multiple data-live-search="true" th:field="*{topics}">
+						<option th:each="module : ${module}" th:value="${module.moduleId}"
+							th:text="${module.moduleName}"></option>
+
+					</select>
+					<P id="topicsError" style="display: none; color: red;">Please
+						fill at least one topic</P>
+				</div>
+				<!--/-------------------------topics drop down ending----------------------->
+
+				<!--/-------------------------previous modules drop down starting----------------------->
+				<div class="col-sm-5 col-md-5 col-lg-3 col-xl-3 mb-3">
+					<label class="form-check-label">Previous Modules</label> <br>
+					<select class="selectpicker input-small"
+						title="select previous modules" multiple data-live-search="true"
+						th:field="*{previousModules}">
+						<option th:each="module : ${module}" th:value="${module.moduleId}"
+							th:text="${module.moduleId}"></option>
+					</select>
+				</div>
+				<!--/-------------------------previous modules drop down ending----------------------->
+
+				<!--/-------------------------dissertation modules drop down starting----------------------->
+				<div class="col-sm-5 col-md-5 col-lg-3 col-xl-3 mb-3">
+					<label class="form-check-label"> Potential Supervisors</label> <br>
+					<select class="selectpicker input-small" title="Select supervisors"
+						multiple data-live-search="true"
+						th:field="*{potentialSupervisors}">
+						<option th:each="localUser : ${userByRole}"
+							th:value="${localUser.userId}"
+							th:text="${localUser.firstName +' ' + localUser.lastName}"></option>
+
+					</select>
+				</div>
+				<!--/-------------------------dissertation modules drop down ending----------------------->
+			</div>
+			<div class="row customUploadRow">
+				<div class="col-sm-12">
+					<button class="btn btn-secondary float-right" id="uploadButton">Submit</button>
+				</div>
+			</div>
+
+			<!--/button div closing-->
+		</form>
+		<script src="../../static/js/CurrentNavLink.js"
+			th:src="@{js/CurrentNavLink.js}"></script>
+		<script src="../../static/js/ProjectProposal.js"
+			th:src="@{js/ProjectProposal.js}"></script>
+	</div>
+</body>
+
+</html>

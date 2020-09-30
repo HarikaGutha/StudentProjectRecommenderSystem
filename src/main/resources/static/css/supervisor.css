@@ -1,0 +1,196 @@
+@charset "UTF-8";
+
+/**
+* styles for tags with class researchGroup
+*/
+.researchGroup {
+	border-radius: 20px !important;
+	color: white !important;
+	font-family: poppins !important;
+	font-weight: bold !important;
+	font-size: 20px !important;
+}
+
+/**
+* styles for tags with class allSupervisorImages
+*/
+.allSupervisorImages {
+	width: 100px !important;
+	border-radius: 50% !important;
+}
+
+/**
+* styles for tags with class profileIcon
+*/
+.profileIcon {
+	width: inherit !important;
+	border-radius: 50% !important;
+}
+
+/**
+* styles for tags with class profileName
+*/
+.profileName {
+	font-family: poppins !important;
+	font-weight: bold !important;
+	font-size: 40px !important;
+	color: navy;
+}
+
+/**
+* styles for tags with class researchIcon
+*/
+.researchIcon {
+	width: 75px;
+}
+
+/**
+* styles for tags with class researchIconName
+*/
+.researchIconName {
+	font-family: poppins !important;
+	font-weight: bold !important;
+	color: navy;
+	display: inline
+}
+
+/**
+* styles for tags with class sliderBackground
+*/
+.sliderBackground {
+	background: #DCDCDC;
+}
+
+/**
+* styles for li tags with class carousel-indicators inside ol tags
+*/
+ol.carousel-indicators li {
+	height: 15px;
+	width: 15px;
+	border-radius: 50%
+}
+
+/**
+* styles for tags with class profileBackground
+*/
+.profileBackground {
+	background: #c1d7ec;
+	border-radius: 20px;
+}
+
+/**
+* styles for tags with class lineBreak
+*/
+.lineBreak {
+	background: white;
+	height: 1px;
+}
+
+/**
+* styles for tags with class publication
+*/
+.publication {
+	font-family: poppins;
+	font-weight: bold;
+	text-decoration: none;
+	color: black;
+}
+
+/**
+* styles for tags with class imageSlider
+*/
+.imageSlider {
+	font-size: 20px;
+	text-align: center;
+}
+
+/**
+* styles for tags with class tagCloudPadding
+*/
+.tagCloudPadding {
+	padding-left: 1rem !important;
+	padding-right: 1rem !important;
+}
+
+/**
+* styles for tags with class sliderMargin
+*/
+.sliderMargin {
+	margin-left: 3rem !important;
+	margin-right: 3rem !important;
+}
+
+/**
+* styles for tags with class sliderMargin1Rem
+*/
+.sliderMargin1Rem {
+	margin-left: 1rem !important;
+	margin-right: 1rem !important;
+}
+
+/**
+* styles for tags with class pxPadding
+*/
+.pxPadding {
+	margin-right: 1rem !important;
+	margin-left: 2rem !important;
+}
+
+/**
+*overrides the above properties if screen max-width is 1024px.
+*/
+@media screen and (max-width:1024px) {
+	.profileIcon {
+		width: 150px !important;
+	}
+}
+
+/**
+*overrides the above properties if screen max-width is 768px.
+*/
+@media screen and (max-width:768px) {
+	.sliderMargin {
+		margin-left: 0px !important;
+		margin-right: 0px !important;
+	}
+}
+
+/**
+*overrides the above properties if screen max-width is 480px.
+*/
+@media screen and (max-width:480px) {
+	.paginationImage {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+	.profileName {
+		font-size: 30px !important;
+	}
+	.tagCloudPadding {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+	.sliderMargin1Rem {
+		margin-left: 0 !important;
+		margin-right: 0 !important;
+	}
+	.pxPadding {
+		margin-right: 0px !important;
+	}
+	.pxChildPadding {
+		margin-right: 0rem !important;
+		margin-left: 1rem !important;
+	}
+	.mobilePadding {
+		padding-right: 0px !Important
+	}
+}
+
+/**
+*overrides the above properties if screen max-width is 360px.
+*/
+@media screen and (max-width:360px) {
+	.researchGroup {
+		font-size: 18px !important;
+	}
+}

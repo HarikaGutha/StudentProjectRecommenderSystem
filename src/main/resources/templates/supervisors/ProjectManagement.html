@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/supervisorFragments/SupervisorLayout}">
+
+<head>
+</head>
+
+<body>
+	<div layout:fragment="content" class="container-fluid">
+
+		<div class="paddingRow container-fluid row " id="customManagementRow">
+			<button id="projects"
+				class="rowButton col-5 col-sm-5 col-md-2 col-lg-2"
+				onclick="displayMyProjects()" title="click to view your projects">
+				My Projects</button>
+			<button id="collaboration"
+				class="rowButton col-5 col-sm-5 col-md-2 col-lg-2"
+				onclick="displayCollaboration()"
+				title="click to view collaborative projects">Collaboration
+			</button>
+			<button id="allProjects"
+				class="rowButton col-5 col-sm-5 col-md-2 col-lg-2"
+				onclick="displayAllProjects()" title="click to view all projects">
+				All Projects</button>
+			<button id="studentProposals"
+				class="rowButton col-5 col-sm-5 col-md-2 col-lg-2"
+				onclick="displayStudentProposals()"
+				title="click to view student proposals">Student Proposals</button>
+		</div>
+		<!--/projectmanagement buttons div cloisng-->
+		<div id="commonFilters"
+			class=" customManagementFilters container-fluid row">
+			<select
+				class="customSubFilter selectpicker input-small col-sm-5 col-md-5 col-lg-2"
+				id="supervisorProjectState" multiple="multiple"
+				data-live-search="true" title="All project state"
+				th:onchange="filterDropDowns()">
+				<option
+					th:each="supervisorUploadedProjectState : ${supervisorUploadedProjectState}"
+					th:value="${supervisorUploadedProjectState.state}"
+					th:text="${supervisorUploadedProjectState.state}"></option>
+			</select> <select
+				class="customSubFilter selectpicker input-small col-sm-5 col-md-5 col-lg-2"
+				id="dissertationModules" multiple="multiple" data-live-search="true"
+				title="All dissertation Module" th:onchange="filterDropDowns()">
+				<option th:each="dissertationModule : ${dissertationModule}"
+					th:value="${dissertationModule.dissertationModuleId}"
+					th:text="${dissertationModule.dissertationModule}"></option>
+
+			</select> <select
+				class="customSubFilter selectpicker input-small col-sm-5 col-md-5 col-lg-2"
+				id="dateSelect" multiple="multiple" data-live-search="true"
+				title="All date" th:onchange="filterDropDowns()">
+				<th:block th:each="date : ${datePosted}">
+					<option th:each="entry : ${date}"
+						th:text="${entry.key + ' ' + '(' + entry.value + ')'}">
+			</select> <select
+				class="customSubFilter selectpicker input-small col-sm-5 col-md-5  col-lg-2"
+				id="modules" multiple="multiple" data-live-search="true"
+				title="All topics" th:onchange="filterDropDowns()">
+				<option th:each="module : ${module}" th:value="${module.moduleId}"
+					th:text="${module.moduleName}"></option>
+
+			</select>
+
+			<div class=" customSearch input-group md-form form-sm form-2 pl-3">
+				<input th:onkeyup="filterDropDowns()" id="search"
+					class="form-control my-0 py-1 amber-border" type="text"
+					placeholder="Search by title" aria-label="Search" />
+			</div>
+		</div>
+		<div id="studentProposalFilters" style="display: none"
+			class=" customManagementFilters container-fluid row">
+			<select
+				class="customSubFilter selectpicker input-small col-sm-5 col-md-5 col-lg-2"
+				id="studentName" multiple="multiple" title="All students"
+				data-live-search="true"
+				th:onchange="filterStudentProposalDropDowns()">
+				<option th:each="student : ${allStudents}"
+					th:value="${student.userId}"
+					th:text="${student.firstName +' ' + student.lastName}"></option>
+			</select> <select
+				class="customSubFilter selectpicker input-small col-sm-5 col-md-5 col-lg-2"
+				id="StudentProposaldateSelect" multiple="multiple"
+				data-live-search="true" title="All date"
+				th:onchange="filterStudentProposalDropDowns()">
+				<th:block th:each="date : ${submittedOn}">
+					<option th:each="entry : ${date}"
+						th:text="${entry.key + ' ' + '(' + entry.value + ')'}">
+			</select> <select
+				class="customSubFilter selectpicker input-small col-sm-5 col-md-5  col-lg-2"
+				id="topicsDropDown" multiple="multiple" data-live-search="true"
+				title="All topics" th:onchange="filterStudentProposalDropDowns()">
+				<option th:each="module : ${module}" th:value="${module.moduleId}"
+					th:text="${module.moduleName}"></option>
+
+			</select> <select
+				class="customSubFilter selectpicker input-small col-sm-5 col-md-5 col-lg-2"
+				id="studentProjectState" multiple="multiple" data-live-search="true"
+				title="All project state"
+				th:onchange="filterStudentProposalDropDowns()">
+				<option
+					th:each="studentSubmittedProjectState : ${studentSubmittedProjectState}"
+					th:value="${studentSubmittedProjectState.stateId}"
+					th:text="${studentSubmittedProjectState.state}"></option>
+			</select>
+			<div class=" customSearch input-group md-form form-sm form-2 pl-3">
+				<input th:onkeyup="filterStudentProposalDropDowns()"
+					id="searchStudentProposals" type="text"
+					class="form-control my-0 py-1 amber-border"
+					placeholder="Search by title" aria-label="Search" />
+			</div>
+
+		</div>
+		<!--/projectmanagement filters div closing-->
+		<div class="table-responsive">
+			<table id="projectTable" class="table table-bordered">
+				<thead>
+					<tr>
+						<th scope="col" id="edit">Edit</th>
+						<th scope="col">Title</th>
+						<th scope="col">State</th>
+						<th scope="col">Modules</th>
+						<th scope="col">Added On</th>
+						<th scope="col">Modified On</th>
+						<th scope="col">Topics</th>
+						<th scope="col">Dissertation Categories</th>
+					</tr>
+				</thead>
+				<tr th:if="${#lists.size(project) > 0}"
+					th:each="project : ${project}">
+					<td><a th:href="@{/editProject(id=${project.projectId})}"
+						title="Edit project"><i class="edit fas fa-pencil-alt"></i></a></td>
+					<td th:value="${project.projectId}" th:text="${project.title}">
+					</td>
+					<td
+						th:switch="${project.projectState == null ? '' :project.projectState.state}">
+						<span th:onclick="|changeState('${project.projectId}')|"
+						class="pointer" th:id="availableSpan+${project.projectId}"
+						th:case="Available" title="click to change project state">
+							<i th:id="availableCircle+${project.projectId}"
+							class="fas fa-circle" style="color: green"></i> Available
+					</span> <span th:onclick="|changeState('${project.projectId}','taken')|"
+						class="pointer" th:id="takenSpan+${project.projectId}"
+						th:case="Taken" title="click to change project state"> <i
+							th:id="takenCircle+${project.projectId}" class="fas fa-circle"
+							style="color: red"></i> Taken
+					</span> <span
+						th:onclick="|changeState('${project.projectId}','historic')|"
+						class="pointer" th:id="historicSpan+${project.projectId}"
+						th:case="Historic" title="click to change project state"> <i
+							th:id="historicCircle+${project.projectId}" class="fas fa-circle"
+							style="color: grey"></i>Historic
+					</span>
+					</td>
+					<td>
+						<p th:each="topics:${project.topics}">
+							<span th:text="${topics.moduleId}"></span>
+					</td>
+
+					<td th:value="${project.datePosted}"
+						th:text="${#dates.format(project.datePosted, 'dd-MMMM-yyyy')}">
+					</td>
+
+					<td><span th:if="${project.lastEdited != null}"
+						th:value="${project.lastEdited}"
+						th:text="${#dates.format(project.lastEdited, 'dd-MMMM-yyyy')}"></span>
+						<span style="margin-left: 50%; margin-right: 50%"
+						th:if="${project.lastEdited == null}"> - </span></td>
+
+					<td>
+						<p th:each="topics:${project.topics}">
+							<span th:text="${topics.moduleName}"></span>
+					</td>
+
+					<td>
+						<p th:each="dissertationModule:${project.dissertationModules}">
+							<span th:text="${dissertationModule.dissertationModule}"></span>
+					</td>
+
+
+				</tr>
+
+			</table>
+			<!--/projectTable closing-->
+			<div id="noMyProjects" th:if="${#lists.size(project) <= 0}"
+				class="noProjects">No uploaded projects</div>
+			<table id="collaborationTable" class="table table-bordered"
+				style="display: none">
+				<thead>
+					<tr>
+						<th scope="col">Edit</th>
+						<th scope="col">Title</th>
+						<th scope="col">Supervisors</th>
+						<th scope="col">State</th>
+						<th scope="col">Modules</th>
+						<th scope="col">Added On</th>
+						<th scope="col">Modified On</th>
+						<th scope="col">Topics</th>
+						<th scope="col">Dissertation Categories</th>
+					</tr>
+				</thead>
+				<tr th:if="${#lists.size(internalCollaborationProjects) > 0}"
+					th:each="project : ${internalCollaborationProjects}">
+					<td><a th:href="@{/editProject(id=${project.projectId})}"
+						title="Edit Project"><i class="edit fas fa-pencil-alt "></i></a></td>
+					<td th:value="${project.projectId}" th:text="${project.title}">
+					</td>
+					<td
+						th:value="${project.userId.firstName + ' ' + project.userId.lastName}"
+						th:text="${project.userId.firstName + ' ' + project.userId.lastName}">
+					</td>
+					<td
+						th:switch="${project.projectState == null ? '' :project.projectState.state}">
+						<span
+						th:onclick="|changeState('${project.projectId}','available')|"
+						class="pointer" th:id="availableSpan+${project.projectId}"
+						th:case="Available" title="click to change project state">
+							<i th:id="availableCircle+${project.projectId}"
+							class="fas fa-circle" style="color: green"></i> Available
+					</span> <span th:onclick="|changeState('${project.projectId}','taken')|"
+						class="pointer" th:id="takenSpan+${project.projectId}"
+						th:case="Taken" title="click to change project state"> <i
+							th:id="takenCircle+${project.projectId}" class="fas fa-circle"
+							style="color: red"></i> Taken
+					</span> <span
+						th:onclick="|changeState('${project.projectId}','historic')|"
+						class="pointer" th:id="historicSpan+${project.projectId}"
+						th:case="Historic" title="click to change project state"> <i
+							th:id="historicCircle+${project.projectId}" class="fas fa-circle"
+							style="color: grey"></i>Historic
+					</span>
+					</td>
+
+					<td>
+						<p th:each="topics:${project.topics}">
+							<span th:text="${topics.moduleId}"></span>
+					</td>
+
+					<td th:value="${project.datePosted}"
+						th:text="${#dates.format(project.datePosted, 'dd-MMMM-yyyy')}">
+					</td>
+
+					<td><span th:if="${project.lastEdited != null}"
+						th:value="${project.lastEdited}"
+						th:text="${#dates.format(project.lastEdited, 'dd-MMMM-yyyy')}"></span>
+						<span style="margin-left: 50%; margin-right: 50%"
+						th:if="${project.lastEdited == null}"> - </span></td>
+
+					<td>
+						<p th:each="topics:${project.topics}">
+							<span th:text="${topics.moduleName}"></span>
+					</td>
+
+					<td>
+						<p th:each="dissertationModule:${project.dissertationModules}">
+							<span th:text="${dissertationModule.dissertationModule}"></span>
+					</td>
+
+					<td>
+				</tr>
+
+			</table>
+			<!--/collaborationTable cloding-->
+			<div id="noCollaborationProjects"
+				th:if="${#lists.size(internalCollaborationProjects) <= 0}"
+				class="noProjects" style="display: none;">No collaboration
+				projects</div>
+			<table id="allProjectsTable" class="table table-bordered"
+				style="display: none">
+				<thead>
+					<tr>
+						<th scope="col">Title</th>
+						<th scope="col">Supervisor</th>
+						<th scope="col">State</th>
+						<th scope="col">Modules</th>
+						<th scope="col">Added On</th>
+						<th scope="col">Modified On</th>
+						<th scope="col">Topics</th>
+						<th scope="col">Dissertation Categories</th>
+					</tr>
+				</thead>
+				<tr th:if="${#lists.size(allProjects) > 0}"
+					th:each="project : ${allProjects}">
+					<td style="cursor: pointer;"><a
+						th:value="${project.projectId}" th:text="${project.title}"
+						data-toggle="modal"
+						th:data-target="'#allProject'+${project.projectId}"> </a></td>
+					<td
+						th:value="${project.userId.firstName + ' ' + project.userId.lastName}"
+						th:text="${project.userId.firstName + ' ' + project.userId.lastName}">
+					</td>
+					<td
+						th:switch="${project.projectState == null ? '' :project.projectState.state}">
+						<span th:case="Available"><i class="fas fa-circle"
+							style="color: green"></i> Available</span> <span th:case="Taken"><i
+							class="fas fa-circle" style="color: red"></i> Taken</span> <span
+						th:case="Historic"><i class="fas fa-circle"
+							style="color: grey"> </i>Historic</span>
+					</td>
+
+					<td>
+						<p th:each="topics:${project.topics}">
+							<span th:text="${topics.moduleId}"></span>
+					</td>
+
+					<td th:value="${project.datePosted}"
+						th:text="${#dates.format(project.datePosted, 'dd-MMMM-yyyy')}">
+					</td>
+
+					<td><span th:if="${project.lastEdited != null}"
+						th:value="${project.lastEdited}"
+						th:text="${#dates.format(project.lastEdited, 'dd-MMMM-yyyy')}"></span>
+						<span style="margin-left: 50%; margin-right: 50%"
+						th:if="${project.lastEdited == null}"> - </span></td>
+
+					<td>
+						<p th:each="topics:${project.topics}">
+							<span th:text="${topics.moduleName}"></span>
+					</td>
+
+					<td>
+						<p th:each="dissertationModule:${project.dissertationModules}">
+							<span th:text="${dissertationModule.dissertationModule}"></span>
+					</td>
+
+					<td>
+				</tr>
+
+			</table>
+			<!--/allProjectsTable closing-->
+			<div class="modal" th:each="project : ${allProjects}"
+				th:id="'allProject'+${project.projectId}">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<!-- Modal Header -->
+						<div class="modal-header">
+							<h4 class="modal-title" th:text="${project.title}"
+								style="font-family: poppins"></h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<!-- Modal body -->
+						<div class="modal-body">
+							<label style="font-family: poppins">Description:</label>
+							<p th:text="${project.description}"
+								style="display: inline-block; font-family: poppins"></p>
+							<br> <label style="font-family: poppins">Additional
+								Information:</label>
+							<p style="display: inline-block; font-family: poppins"
+								th:text="${#strings.length(project.additionalInformation) <= 0 ? 
+                    'No additional information available' :project.additionalInformation}"></p>
+							<br> <label style="font-family: poppins">Background:</label>
+							<p style="display: inline-block; font-family: poppins"
+								th:text="${#strings.length(project.background) <= 0 ? 
+                         'No background readings available' :project.background}"></p>
+							<br> <label style="font-family: poppins">Artefact(s):</label>
+							<p style="display: inline-block; font-family: poppins"
+								th:text="${#strings.length(project.artefact) <= 0 ? 
+                         'No artefacts available' :project.artefact}"></p>
+							<br> <label style="font-family: poppins">Topics:</label>
+							<p style="display: inline-block; font-family: poppins"
+								th:each="topics, iterStat : ${project.topics}">
+								<span
+									th:text="!${iterStat.last} ? ${topics.moduleName} + ',' : ${topics.moduleName}"></span>
+							</p>
+						</div>
+
+						<!-- Modal footer -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div id="noAllProjects" th:if="${#lists.size(allProjects) <= 0}"
+				class="noProjects" style="display: none">No projects</div>
+
+			<table id="studentProposalsTable" class="table table-bordered"
+				style="display: none">
+				<thead>
+					<tr>
+						<th scope="col">Contact</th>
+						<th scope="col">Title</th>
+						<th scope="col">Student</th>
+						<th scope="col">Submitted On</th>
+						<th scope="col">Topics</th>
+						<th scope="col">Status</th>
+					</tr>
+				</thead>
+				<tr th:if="${#lists.size(studentProposals) > 0}"
+					th:each="project : ${studentProposals}">
+					<td style="text-align: center"><a
+						th:href="'mailto:'+${project.userId.email}"
+						title="Contact student"> <i class="fa fa-envelope-o fa-2x"
+							style="color: navy" aria-hidden="true"></i></a></td>
+					<td style="cursor: pointer;"><a
+						th:value="${project.projectId}" th:text="${project.title}"
+						data-toggle="modal"
+						th:data-target="'#project'+${project.projectId}"> </a></td>
+					<td
+						th:value="${project.userId.firstName + ' ' + project.userId.lastName}"
+						th:text="${project.userId.firstName + ' ' + project.userId.lastName}">
+					</td>
+					<td th:value="${project.SubmittedOn}"
+						th:text="${#dates.format(project.submittedOn, 'dd-MMMM-yyyy')}">
+					</td>
+					<td>
+						<p th:if="${#lists.size(project.topics) > 0}"
+							th:each="topics:${project.topics}">
+							<span th:text="${topics.moduleName}"></span>
+						</p>
+						<p th:if="${#lists.size(project.topics) <= 0}">
+							<span style="margin-left: 50%; margin-right: 50%;"> - </span>
+						</p>
+					</td>
+
+					<td th:id="statusTd+${project.projectId}"
+						th:if="${project.projectState == null ? '' :project.projectState.state}"
+						th:text="${project.projectState == null ? '-' :project.projectState.state}"
+						th:onclick="|changeStudentSubmittedProjectState('${project.projectId}')|"
+						class="pointer" title="click to change project state"></td>
+
+				</tr>
+
+			</table>
+			<!--/studentProposalsTable div closing-->
+
+			<!-- The Modal -->
+			<div class="modal" th:each="project : ${studentProposals}"
+				th:id="'project'+${project.projectId}">
+				<div class="modal-dialog">
+					<div class="modal-content">
+						<!-- Modal Header -->
+						<div class="modal-header">
+							<h4 class="modal-title" th:text="${project.title}"
+								style="font-family: poppins"></h4>
+							<button type="button" class="close" data-dismiss="modal">&times;</button>
+						</div>
+						<!-- Modal body -->
+						<div class="modal-body">
+							<label style="font-family: poppins">Description:</label>
+							<p th:text="${project.description}"
+								style="display: inline-block; font-family: poppins"></p>
+							<br> <label style="font-family: poppins">Additional
+								Information:</label>
+							<p style="display: inline-block; font-family: poppins"
+								th:text="${#strings.length(project.additionalInformation) <= 0 ? 
+                    'No additional information available' :project.additionalInformation}"></p>
+							<br> <label style="font-family: poppins">Topics:</label>
+							<p style="display: inline-block; font-family: poppins"
+								th:each="topics, iterStat : ${project.topics}">
+								<span
+									th:text="!${iterStat.last} ? ${topics.moduleName} + ',' : ${topics.moduleName}"></span>
+							</p>
+							<br> <label style="font-family: poppins">Project
+								Type:</label>
+							<p th:text="${project.projectType}"
+								style="display: inline-block; font-family: poppins"></p>
+						</div>
+
+						<!-- Modal footer -->
+						<div class="modal-footer">
+							<button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div id="noSudentProposals"
+				th:if="${#lists.size(studentProposals) <= 0}" class="noProjects"
+				style="display: none">No student proposals directed to you</div>
+		</div>
+		<script src="../../static/js/CurrentNavLink.js"
+			th:src="@{js/CurrentNavLink.js}"></script>
+		<script src="../../static/js/ProjectManagement.js"
+			th:src="@{js/ProjectManagement.js}"></script>
+		<script src="../../static/js/ChangeProjectState.js"
+			th:src="@{js/ChangeProjectState.js}"></script>
+	</div>
+
+</body>
+
+</html>

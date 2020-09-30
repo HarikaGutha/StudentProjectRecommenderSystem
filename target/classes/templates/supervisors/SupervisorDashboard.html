@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/supervisorFragments/SupervisorLayout}">
+
+<head>
+</head>
+
+<body>
+	<div layout:fragment="content" class="container-fluid pl-3 pr-3 pt-3">
+		<div class="row">
+			<div class="col-12 col-lg-6 col-xl-6 pb-3"
+				style="text-align: center;">
+				<a class="btn btn-primary px-3 py-3 studentDashboardButtons"
+					style="background: #B0C4DE"
+					th:text="${'Your projects '+ '(' + projectsCount + ')'}"
+					th:href="@{/projectManagement}"
+					title="Click to navigate to project management page"></a>
+			</div>
+			<div class="col-12 col-lg-6 col-xl-6 pb-3"
+				style="text-align: center;">
+				<button class="btn btn-primary px-3 py-3 studentDashboardButtons"
+					style="background: lightgrey"
+					th:text="${'Student proposals directed to you '+'(' + studentProposalsCount +')'}"></button>
+			</div>
+
+		</div>
+		<!-- /buttons div closing -->
+		<div class="dashboardTable table-responsive pt-5"
+			style="text-align: center;">
+			<P class="subHeader">Quick Edit Your Recent Projects</P>
+			<table class="table table-bordered">
+				<thead>
+					<tr>
+						<th scope="col">Edit</th>
+						<th scope="col">Title</th>
+						<th scope="col">State</th>
+					</tr>
+				</thead>
+				<tr th:if="${#lists.size(projects) > 0}"
+					th:each="project : ${projects}">
+					<td><a th:href="@{/editProject(id=${project.projectId})}"
+						title="Edit Project"><i class="edit fas fa-pencil-alt"></i></a></td>
+					<td th:value="${project.projectId}" th:text="${project.title}">
+					</td>
+					<td
+						th:switch="${project.projectState == null ? '' :project.projectState.state}">
+						<span th:onclick="|changeState('${project.projectId}')|"
+						class="pointer" th:id="availableSpan+${project.projectId}"
+						th:case="Available" title="click to change project state">
+							<i th:id="availableCircle+${project.projectId}"
+							class="fas fa-circle" style="color: green"></i> Available
+					</span> <span th:onclick="|changeState('${project.projectId}','taken')|"
+						class="pointer" th:id="takenSpan+${project.projectId}"
+						th:case="Taken" title="click to change project state"> <i
+							th:id="takenCircle+${project.projectId}" class="fas fa-circle"
+							style="color: red"></i> Taken
+					</span> <span
+						th:onclick="|changeState('${project.projectId}','historic')|"
+						class="pointer" th:id="historicSpan+${project.projectId}"
+						th:case="Historic" title="click to change project state"> <i
+							th:id="historicCircle+${project.projectId}" class="fas fa-circle"
+							style="color: grey"> </i>Historic
+					</span>
+					</td>
+					<td>
+				</tr>
+				<tr class="noProjects" th:if="${#lists.size(projects) <= 0}">
+					<td></td>
+					<td>No projects Uploaded</td>
+				</tr>
+			</table>
+		</div>
+		<!-- /dashboardTable div closing -->
+		<div style="background: navy; text-align: center;">
+			<div id="chartHeader" class="py-3">Number of your available
+				projects over time</div>
+		</div>
+		<div style="height: 600px; overflow-x: auto; position: relative;">
+			<div id="chartContainer" class="pb-5"
+				style="height: 500px; width: 100%"></div>
+		</div>
+		<!--/line graph div closing-->
+		<script src="../../static/js/CurrentNavLink.js"
+			th:src="@{js/CurrentNavLink.js}"></script>
+		<script src="../../static/js/ChangeProjectState.js"
+			th:src="@{js/ChangeProjectState.js}"></script>
+		<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
+		<script th:inline="javascript">
+            //line
+            window.onload = function() {
+                /*<![CDATA[*/
+                var projectsPerMonth = /*[[${projectCountByMonth}]]*/
+                    if (projectsPerMonth.length == 0) {
+                        document.getElementById("chartContainer").innerText = "No Available Projects";
+                        document.getElementById("chartContainer").classList.add("noProjects");
+                    } else {
+                        var chart = new CanvasJS.Chart("chartContainer", {
+                            animationEnabled: true,
+                            title: {
+                                fontFamily: "poppins",
+                                fontSize: 20,
+                                fontWeight: "bold",
+
+                            },
+                            axisX: {
+                                labelAngle: 135,
+                                labelFontSize: 16,
+                                labelFontFamily: "poppins",
+                            },
+                            data: [{
+                                type: "line",
+                                dataPoints: projectsPerMonth,
+                            }]
+                        });
+                        chart.render();
+                        /*]]>*/
+                    }
+            }
+        </script>
+	</div>
+</body>
+
+</html>

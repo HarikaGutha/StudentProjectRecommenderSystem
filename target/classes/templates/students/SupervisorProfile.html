@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/studentFragments/StudentLayout}">
+
+<body>
+	<div layout:fragment="content" class="pt-4 container-fluid">
+		<!--/div will be replaced by supervisorBody profile under fragments/SupervisorProfile-->
+		<div th:replace="fragments/SupervisorProfile ::supervisorBody"></div>
+	</div>
+</body>
+
+</html>

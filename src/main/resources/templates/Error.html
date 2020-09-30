@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!--/ thymeleaf namespace and security-->
+
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" />
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+<title>Error</title>
+</head>
+
+<body>
+
+	<div class="container h-100">
+		<div class="row align-items-center h-100">
+			<div class="col-6 mx-auto" style="text-align: center !important;">
+				<div class="jumbotron"
+					style="background-color: #DEDEDE !important; margin-top: 40%;">
+					<img class="img-fluid" src="images/Error.png" />
+					<p th:if="${error != null}" th:text="${error}"
+						style="display: inline-block; font-weight: bold"></p>
+					<p th:if="${error == null}"
+						style="display: inline-block; font-weight: bold">Oops!
+						something went wrong. Please try again later or contact system
+						administrator</p>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

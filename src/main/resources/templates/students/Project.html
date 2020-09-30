@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/studentFragments/StudentLayout}">
+
+<head>
+</head>
+
+<body>
+	<div layout:fragment="content"
+		class="customProjectBackgroundClass container-fluid">
+		<div class="row">
+			<div class="projectTitleDiv col-8">
+				<span class="iconPadding"
+					th:switch="${project.projectState == null ? '' :project.projectState.state}">
+					<i th:case="Available" class="fas fa-circle fa-lg"
+					style="color: green"></i> <i th:case="Taken" class="fas fa-circle"
+					style="color: red"></i> <i th:case="Historic" class="fas fa-circle"
+					style="color: grey"></i>
+				</span>
+				<p class="projectTitle" style="display: inline"
+					th:value="${project.projectId}" th:text="${project.title}"></p>
+				<!-- /title closing -->
+				<p class="iconPadding" style="display: inline">
+					<span th:if="${project.isSavedProject}"> <i
+						th:id="save +${project.projectId}"
+						th:onclick=" |save('${project.projectId}')| "
+						style="color: orange" class="fa fa-heart fa-2x saveSymbol"> </i>
+					</span> <span th:unless="${project.isSavedProject}"> <i
+						th:id="save +${project.projectId} "
+						th:onclick=" |save('${project.projectId}')| " style="color: white"
+						class="fa fa-heart fa-2x saveSymbol" aria-hidden="true"> </i>
+					</span>
+				</p>
+			</div>
+			<!-- /projectTitleDiv closing -->
+			<div class="col-3">
+				<a th:href=@{/supervisorProfile(id=${project.userId.userId})}> <img
+					id="supervisorImage"
+					th:src="@{'/userImages/' + ${supervisorImage}}" /></a> <a
+					type="button" class="nameButton btn btn-secondary"
+					th:title="${project.userId.email}"
+					th:text="${project.userId.firstName} + ' ' + ${project.userId.lastName}"
+					th:href=@{/supervisorProfile(id=${project.userId.userId})}></a>
+			</div>
+
+		</div>
+		<div class="row">
+			<div class="col pt-4 pb-4">
+				<div class="projectView">
+					<div class="projectViewChildDiv">Project Description</div>
+					<p class="textBody"
+						th:text="${project.description == ' ' ? '' :project.description}"></p>
+					<!--/projectViewChildDiv closing-->
+				</div>
+				<!--/projectview div closing-->
+			</div>
+			<!--/description col closing-->
+		</div>
+		<!--/decription row closing-->
+
+		<div class="row">
+			<div class="col pt-4 pb-4">
+				<div class="projectView">
+					<div class="projectViewChildDiv">Additional Information</div>
+					<p class="textBody"
+						th:text="${#strings.length(project.additionalInformation) <= 0 ? 
+                    'No additional information available' :project.additionalInformation}"></p>
+					<!--/projectViewChildDiv closing-->
+				</div>
+				<!--/projectview div closing-->
+			</div>
+			<!--/description col closing-->
+		</div>
+		<!--/decription row closing-->
+
+		<div class="row">
+			<div class="col-lg-6 pb-4">
+				<div class="backgroundDiv col-lg-12">
+					<div id="backgroundDivHeight" class="projectView">
+						<div class="projectViewChildDiv">Background Readings</div>
+						<p class="textBody"
+							th:text="${#strings.length(project.background) <= 0 ? 
+                         'No background readings available' :project.background}"></p>
+						<!--/projectViewChildDiv closing-->
+					</div>
+					<!--/projectview div closing-->
+				</div>
+				<!--/ Background Readings inner col clsoing-->
+			</div>
+			<!--/ Background Readings outer col closing-->
+			<div class="col-lg-6 pb-4">
+				<div class="artefactDiv col-lg-12">
+					<div id="artefactDivHeight" class="projectView">
+						<div class=" projectViewChildDiv">Artefact(s)</div>
+						<!--/projectViewChildDiv closing-->
+						<p class="textBody"
+							th:text="${#strings.length(project.artefact) <= 0 ? 
+                         'No artefacts available' :project.artefact}"></p>
+					</div>
+					<!--/projectview div closing-->
+				</div>
+				<!--/ Artefact(s) inner col clsoing-->
+			</div>
+			<!--/Artefact(s) outer col closing-->
+		</div>
+		<!--/background readings and Artefact(s) row closing-->
+		<div class="projectDetails row">
+			<div class="col-12 col-md-6 col-lg-4 pb-4">
+				<span class="projectBoldLook">Dissertation Category:</span>
+				<p class="projectDetailsPTag" style="display: inline-block"
+					th:each="dissertationModule, iterStat : ${project.dissertationModules}">
+					<span
+						th:text="!${iterStat.last} ? ${dissertationModule.dissertationModule} + ',' : ${dissertationModule.dissertationModule}"></span>
+				</p>
+			</div>
+			<!-- /Dissertation Category closing -->
+			<div class="col-12 col-md-6 col-lg-4 pb-4">
+				<span class="projectBoldLook">Topic Area:</span>
+				<p class="projectDetailsPTag" style="display: inline-block"
+					th:each="topics, iterStat : ${project.topics}">
+					<span
+						th:text="!${iterStat.last} ? ${topics.moduleName} + ',' : ${topics.moduleName}"></span>
+				</p>
+			</div>
+			<!-- /topic area closing -->
+			<div class="col-12 col-md-6 col-lg-4 pb-4">
+				<span class="projectBoldLook">Date Posted:</span>
+				<p class="projectDetailsPTag" style="display: inline-block"
+					th:text="${date}"></p>
+			</div>
+			<!-- /date posted closing -->
+			<div class="col-12 col-md-6 col-lg-4 pb-4">
+				<span class="projectBoldLook">Relevant Modules:</span>
+				<!--    <div th:if="${#lists.size(project.previousModules) > 0}">-->
+				<p th:if="${#lists.size(project.previousModules) > 0}"
+					class="projectDetailsPTag" style="display: inline-block"
+					th:each="previousModules, iterStat : ${project.previousModules}">
+					<span
+						th:text="!${iterStat.last} ? ${previousModules.moduleId} + ',' : ${previousModules.moduleId}"></span>
+				</p>
+				<!--   </div>-->
+				<p th:if="${#lists.size(project.previousModules) <= 0}"
+					class="projectDetailsPTag" style="display: inline-block">
+					<span>No Relevant Modules</span>
+				</p>
+			</div>
+			<!--  /Relevant Modules clsoing-->
+			<div class="col-12 col-md-6 col-lg-4 pb-4">
+				<span class="projectBoldLook">Additional Supervisors:</span>
+				<p th:if="${#lists.size(allSupervisors) > 0}"
+					class="projectDetailsPTag" style="display: inline-block"
+					th:each="supervisors, iterStat : ${allSupervisors}">
+					<span
+						th:text="!${iterStat.last} ? ${supervisors.firstName + ' ' + supervisors.lastName} + ',' : ${supervisors.firstName + ' ' + supervisors.lastName}">
+					</span>
+				</p>
+				<p th:if="${#lists.size(allSupervisors) <= 0}"
+					class="projectDetailsPTag" style="display: inline-block">
+					<span> No additional supervisors</span>
+				</p>
+			</div>
+			<!--  /additional supervisors clsoing-->
+
+		</div>
+		<!-- /project details div closing -->
+		<br>
+		<div class="buttonsRow row">
+			<div class="col-12 col-md-4 col-lg-4 pb-4 pt-2">
+				<button th:onclick="javascript:window.history.back()" type="button"
+					class="navigationButtons col btn btn-primary">Back</button>
+			</div>
+			<div class="col-12 col-md-4 col-lg-4 pb-4 pt-2">
+				<a th:href="@{/previousProjectDescription(id=${project.projectId})}"
+					type="button" class="navigationButtons col btn btn-primary">Previous
+					Project</a>
+			</div>
+			<div class="col-12 col-md-4 col-lg-4 pb4 pt-2">
+				<a th:href="@{/nextProjectDescription(id=${project.projectId})}"
+					type="button" class="navigationButtons col btn btn-primary">Next
+					Project</a>
+			</div>
+		</div>
+		<script src="../../static/js/CurrentNavLink.js"
+			th:src="@{js/CurrentNavLink.js}"></script>
+		<script src="../../static/js/SaveProject.js"
+			th:src="@{js/SaveProject.js}"></script>
+		<script>
+            $(document).ready(function() {
+                var height = Math.max($("#backgroundDivHeight").height(), $("#artefactDivHeight").height());
+                $("#backgroundDivHeight").height(height);
+                $("#artefactDivHeight").height(height);
+            });
+        </script>
+	</div>
+</body>
+
+</html>

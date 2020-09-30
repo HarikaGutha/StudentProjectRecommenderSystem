@@ -1,0 +1,216 @@
+@charset "UTF-8";
+
+/**
+* styles for tags with class projectRow
+*/
+.projectRow {
+	background-color: white;
+	border-top: 1px solid darkgrey;
+	border-left: 1px solid darkgrey;
+	border-right: 1px solid darkgrey;
+	border-radius: 20px 20px 0px 0px;
+}
+
+/**
+* styles for tags with class projectTitle
+*/
+.projectTitle {
+	padding-top: 1%;
+	font-family: poppins;
+	font-size: 20px;
+	font-weight: bold;
+	text-decoration: none;
+	color: black;
+}
+
+/**
+* styles for tags with class projectTitle on hover
+*/
+.projectTitle:hover {
+	text-decoration: none;
+	color: black;
+}
+
+/**
+* styles for tags with class projectDescription
+*/
+.projectDescription {
+	margin-bottom: 0px !important;
+	font-family: poppins;
+	font-size: 16px;
+}
+
+/**
+* styles for tags with class filterClass
+*/
+.filterClass {
+	background-color: lightgrey;
+	padding-bottom: 2%;
+	padding-top: 1%;
+	border: 1px solid darkgrey;
+}
+
+/**
+* styles for tags with class filterButtonCol
+*/
+.filterButtonCol {
+	padding-top: 2%;
+	padding-right: 2% !important;
+}
+
+/**
+* styles for tags with class filterButton
+*/
+.filterButton {
+	font-family: poppins !important;
+	font-size: 20px !important;
+	font-weight: bold !important;
+	border-radius: 20px !important;
+	margin-right: 5% !important;
+}
+
+/**
+* styles for tags with class customAllProjectBg
+*/
+.customAllProjectBg {
+	background-color: white;
+	border-bottom: 1px solid darkgrey;
+	border-left: 1px solid darkgrey;
+	border-right: 1px solid darkgrey;
+	border-radius: 0px 0px 20px 20px;
+	font-family: poppins;
+	font-size: 16px;
+}
+
+/**
+* styles for tags with class boldLook
+*/
+.boldLook {
+	font-family: poppins;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+/**
+* styles for tag with id allProjectsImages
+*/
+#allProjectsImages {
+	width: 65px;
+	padding-top: 10px;
+	border-radius: 50%;
+}
+
+/**
+* styles for tag with id supervisorImageDiv
+*/
+#supervisorImageDiv {
+	text-align: center;
+}
+
+/**
+* styles for tags with class nameButton
+*/
+.nameButton {
+	border-radius: 20px !important;
+	font-family: poppins !important;
+	font-size: 16px !important;
+	font-weight: bold !important;
+	background-color: lightgray !important;
+	color: black !important;
+	border: none !important;
+}
+
+/**
+* styles for tags with class showMore
+*/
+.showMore {
+	border: 0px;
+	background-color: white;
+	font-weight: bold;
+	font-family: poppins;
+	font-size: 18px;
+	margin-top: 0px !important;
+	padding-left: 0px;
+	padding-top: 0px;
+	text-decoration: none;
+	color: black;
+}
+
+/**
+* styles for tags with class showMore on focus
+*/
+.showMore:focus {
+	border: none;
+	outline: none;
+	text-decoration: none;
+	color: black;
+}
+
+/**
+* styles for tags with class showMore on hover
+*/
+.showMore:hover {
+	text-decoration: none;
+	color: black;
+}
+
+/**
+* styles for span tag inside the tags with class morecontent
+*/
+.morecontent span {
+	display: none;
+}
+
+.hiddenRow {
+	margin-bottom: 15px;
+}
+
+/**
+*overrides the above properties if screen max-width is 768px.
+*/
+@media screen and (max-width: 768px) {
+	.filterButton {
+		font-size: 14px !important;
+	}
+}
+
+/**
+*overrides the above properties if screen max-width is 480px.
+*/
+@media screen and (max-width: 480px) {
+	.searchAll {
+		padding-top: 5% !important;
+		padding-left: 0px !important;
+	}
+	.filterButton {
+		font-size: 14px !important;
+	}
+	.buttonCol {
+		padding-top: 5%;
+	}
+	.hiddenRow {
+		margin-bottom: 0px !important;
+	}
+}
+
+/**
+*overrides the above properties if screen max-width is 350px.
+*/
+@media screen and (max-width: 360px) {
+	.searchAll {
+		padding-top: 5% !important;
+		padding-left: 0px !important;
+	}
+	.filterButton {
+		font-size: 12px !important;
+	}
+	.buttonCol {
+		padding-top: 5%;
+	}
+	.hiddenRow {
+		margin-bottom: 0px !important;
+	}
+	.nameButton {
+		font-size: 14px !important;
+	}
+}

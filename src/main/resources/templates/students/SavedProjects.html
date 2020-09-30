@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/studentFragments/StudentLayout}">
+
+<head>
+</head>
+
+<body>
+	<div layout:fragment="content" class="container-fluid">
+		<div class="row">
+			<div class="paginationImage col-lg-6 pb-4 pt-4"
+				th:if="${#lists.size(allSavedProjects) > 0}"
+				th:each=project:${allSavedProjects}>
+				<div class="paginationImage col-lg-12">
+					<div class="pl-3 pr-3 pt-3 pb-3 savedProjectColSize">
+						<span
+							th:switch="${project.projectState == null ? '' :project.projectState.state}"
+							th:title="${project.projectState.state}"> <i
+							th:case="Available" class="fas fa-circle" style="color: green"
+							title="Available"></i> <i th:case="Taken" class="fas fa-circle"
+							style="color: red" title="Taken"></i> <i th:case="Historic"
+							class="fas fa-circle" style="color: grey" title="Historic"></i>
+						</span>
+						<p style="display: inline">
+							<a
+								th:href="@{/individualProjectDescription(id=${project.projectId})}"
+								class="projectTitle" th:value="${project.projectId}"
+								th:text="${project.title}"
+								title="click the title to view project description"></a> <span
+								th:if="${project.isSavedProject}"> <i
+								th:id="save +${project.projectId}"
+								th:onclick=" |save('${project.projectId}')| "
+								style="color: orange" class="fa fa-heart fa-lg pl-4 saveSymbol">
+							</i>
+							</span> <span th:unless="${project.isSavedProject}"> <i
+								th:id="save +${project.projectId} "
+								th:onclick=" |save('${project.projectId}')| "
+								style="color: white" class="fa fa-heart fa-lg pl-4 saveSymbol"
+								aria-hidden="true"> </i>
+							</span>
+						<p class="projectDescription" th:value="${project.projectId}"
+							th:text="${project.description}"></p>
+						<!-- /description closing -->
+
+						<div class="row ml-3 mt-3">
+							<a th:href=@{/supervisorProfile(id=${project.userId.userId})}>
+								<img id="allProjectsImages" th:each="imageMap: ${imageMap}"
+								th:if="${project.userId == imageMap.key}"
+								th:src="@{'/userImages/' + ${imageMap.value}}" />
+							</a> <br> <a type="button"
+								class="ml-3 mb-3 mt-3 nameButton btn btn-secondary"
+								th:title="${project.userId.email}"
+								th:text="${project.userId.firstName} + ' ' + ${project.userId.lastName}"
+								th:href=@{/supervisorProfile(id=${project.userId.userId})}></a>
+						</div>
+					</div>
+					<!--/savedProjectColSize div closing-->
+				</div>
+				<!--/inner col clsoing-->
+			</div>
+			<!--outer col closing-->
+			<div th:if="${#lists.size(allSavedProjects) <= 0}"
+				class="noProjects mt-3">No saved projects</div>
+		</div>
+		<!-- /row closing -->
+		<script src="../../static/js/CurrentNavLink.js"
+			th:src="@{js/CurrentNavLink.js}"></script>
+		<script src="../../static/js/SaveProject.js"
+			th:src="@{js/SaveProject.js}"></script>
+		<script>
+            $('.savedProjectColSize').matchHeight();
+            /*
+             * method referenced from http://jsfiddle.net/X5r8r/1156/
+             */
+            $(document).ready(function() {
+                var numberOfCharactersToShow = 500;
+                var ellipses = "...";
+                $('.projectDescription').each(function() {
+                    var content = $(this).html();
+                    if (content.length > numberOfCharactersToShow) {
+                        var contentToShow = content.substr(0, numberOfCharactersToShow);
+                        var html = contentToShow + '<span class="moreelipses">' + ellipses + '</span>';
+                        $(this).html(html);
+                    }
+                });
+            });
+        </script>
+	</div>
+</body>
+
+</html>

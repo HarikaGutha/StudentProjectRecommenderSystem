@@ -1,0 +1,110 @@
+@charset "UTF-8";
+
+/**
+* styles for tags with class dashboardTable
+*/
+.dashboardTable {
+	padding-left: 7%;
+	padding-right: 7%;
+}
+
+/**
+* styles for tags with class subHeader
+*/
+.subHeader {
+	font-family: poppins;
+	font-size: 20px;
+	font-weight: bold;
+	color: #004080;
+}
+
+/**
+* styles for tags with class lineGraph
+*/
+.lineGraph {
+	padding-right: 10%;
+	padding-left: 10%;
+}
+
+/**
+* styles for tags with class studentDashboardButtons
+*/
+.studentDashboardButtons {
+	border: none !important;
+	font-family: poppins !important;
+	color: white !important;
+	font-weight: bold !important;
+	border-radius: 20px !important;
+}
+
+/**
+* styles for tags with class barGraphParentRow
+*/
+.barGraphParentRow {
+	/*width: 100%; */
+	background-color: white;
+	border-radius: 20px;
+}
+
+/**
+* styles for tags with class subHeaderParentDiv
+*/
+.subHeaderParentDiv {
+	display: flex;
+	justify-content: center;
+}
+
+/**
+* styles for tags with class subHeaderChildDiv
+*/
+.subHeaderChildDiv {
+	color: #224b71;
+	background-color: #f2f5fe;
+	font-family: poppins;
+	font-weight: bold;
+	border-radius: 20px;
+}
+
+/**
+* styles for tags with class sortDiv
+*/
+.sortDiv {
+	width: fit-content;
+	background-color: #f2f5fe;
+	border-radius: 10px;
+}
+
+/**
+* styles for tags with class iconButton
+*/
+.iconButton {
+	border: none !important;
+}
+
+/**
+* styles for tags with class dashboardSavedProjects
+*/
+.dashboardSavedProjects {
+	background: #a9cce3;
+	border-radius: 20px;
+}
+
+/**
+* styles for tags with class chartHeader
+*/
+#chartHeader {
+	font-family: poppins;
+	font-size: 20px;
+	font-weight: bold;
+	color: white;
+}
+
+/**
+*overrides the above properties if screen max-width is 480px.
+*/
+@media screen and (max-width: 480px) {
+	.dashboardTable {
+		padding-left: 0px !important;
+		padding-right: 0px !important;
+	}
+}

@@ -1,0 +1,311 @@
+/**
+* display of the body is grid layout
+* and applies all the below mentioned styles of body tag.
+*/
+body {
+	margin: 0;
+	overflow-x: hidden;
+}
+
+/**
+*height for aside and main is 100%.
+*/
+aside, main {
+	height: 100%;
+}
+
+/**
+* text alignment for header, aside, and main is centre.
+*/
+header, aside {
+	text-align: center;
+}
+
+/**
+* custom class styling for bootstrap columns.
+*/
+.my-col {
+	padding-left: 0px !important;
+	padding-right: 0px !important;
+}
+
+/**
+* applies the following properties for header tag.
+*/
+header {
+	background: darkblue;
+	margin: 0;
+	padding: 0;
+}
+
+/**
+*applies the following properties for aside tag.
+*/
+aside {
+	background: #e9e9ef;
+}
+
+/**
+*applies the following properties for main tag.
+*/
+main {
+	background: #e8f0f8;
+	padding-left: 1%;
+	padding-right: 1%;
+}
+
+/**
+*applies the following properties to class paddingRow.
+*/
+.paddingRow {
+	padding-top: 2% !important;
+}
+
+/**
+*overrides the properties of .nav-item .nav-link bootstrap class.
+*/
+.nav-item .nav-link {
+	font-size: 40px;
+	color: #0c57a9;
+	padding-bottom: 25%;
+	border-radius: 15%;
+	background-color: #b0c4de;
+	padding: 5% 5%;
+	margin-bottom: 27%;
+}
+
+/**
+*overrides the properties of userImage class.
+*/
+.userImage {
+	height: 75px;
+	width: 75px;
+	margin-top: 25px;
+	background: white;
+	border-radius: 50px;
+}
+
+/**
+*overrides the properties of .navbar bootstrap class.
+*/
+.navbar {
+	padding: 0.5rem 0rem !important;
+}
+
+/**
+* overrides the properties of ul tag.
+*/
+ul {
+	padding: 20% !important;
+}
+
+/**
+* css to display tooltip text for side menubar icons.
+*before hovering opacity of text is 0
+*/
+ul li:before {
+	position: relative;
+	content: attr(data-tooltip);
+	opacity: 0;
+	transition: all 0.5s ease;
+	font-family: poppins;
+	font-size: 13px;
+}
+
+/**
+* css to display tooltip text for side menubar icons.
+*before hovering opacity of text is 1
+*/
+ul li:hover:before {
+	opacity: 1;
+	transition: all 0.5s ease;
+}
+
+/**
+* css to place image in the footer to right bottom.
+*/
+img.footerimage {
+	height: 10vh;
+	position: absolute;
+	bottom: 0px;
+	right: 0px;
+}
+
+/**
+* styles for tag with header1 class
+*/
+.header1 {
+	position: relative;
+	font-family: poppins;
+	font-size: 35px;
+	color: #ffffff;
+	margin-left: 20%;
+}
+
+/**
+* styles for tag with header2 class
+*/
+.header2 {
+	font-family: poppins;
+	font-size: 20px;
+	color: #ffffff;
+	margin-left: 20%;
+}
+
+/**
+* styles for tag with header3 class
+*/
+.header3 {
+	font-family: poppins;
+	font-size: 40px;
+	color: #ffffff;
+	margin-left: 20%;
+}
+
+/**
+* styles for tag with header4 class
+*/
+.header4 {
+	font-family: poppins;
+	font-size: 23px;
+	color: #ffffff;
+	margin-left: 20%;
+}
+
+/**
+* styles for class my-container
+*/
+.my-container {
+	padding-right: 0px !important;
+	padding-left: 0px !important;
+}
+
+/**
+* styles for class my-row
+*/
+.my-row {
+	margin-right: 0px !important;
+	margin-left: 0px !important;
+}
+
+/**
+* styles for class logoutButton
+*/
+.logoutButton {
+	background: white;
+	border: none;
+	border-radius: 20px;
+	color: navy;
+	font-family: poppins;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+/**
+*overrides the above properties if screen max-width is 1050px.
+*/
+@media screen and (max-width: 1050px) {
+	body {
+		grid-template-columns: 15% 85%;
+	}
+	ul {
+		padding: 10% !important;
+	}
+}
+
+/**
+*overrides the above properties if screen max-width is 768px.
+*/
+@media screen and (max-width: 768px) {
+	body {
+		grid-template-columns: 15% 85%;
+	}
+	.navbar {
+		padding-left: 0.5rem !important;
+		padding-right: 0.5rem !important;
+	}
+	.userImage {
+		margin-top: 15px !important;
+	}
+}
+
+/**
+*overrides the above properties if screen max-width is 480px.
+*/
+@media screen and (max-width: 480px) {
+	.navbar {
+		padding-left: 0px !important;
+	}
+	.nav-item .nav-link {
+		font-size: 20px;
+		border-radius: 15%;
+		background-color: #b0c4de;
+		padding: 5% 5%;
+		margin-bottom: 15%;
+	}
+	a.nav-link {
+		width: 50px;
+	}
+	.header1 {
+		font-size: 25px;
+	}
+	.header2 {
+		font-size: 13px;
+	}
+	.header3 {
+		font-size: 25px;
+	}
+	.header4 {
+		font-size: 13px;
+	}
+	.userImage {
+		height: 50px;
+		width: 50px;
+		margin-top: 15px !important;
+	}
+	.my-container {
+		padding-right: 0px !important;
+	}
+	.my-row {
+		margin-right: 0px !important;
+	}
+	.logoutButton {
+		font-size: 12px;
+	}
+}
+
+/**
+*overrides the above properties if screen max-width is 480px.
+*/
+@media screen and (max-width: 360px) {
+	.nav-item .nav-link {
+		font-size: 20px;
+		border-radius: 15%;
+		background-color: #b0c4de;
+		padding: 5% 5%;
+		margin-bottom: 15%;
+	}
+	a.nav-link {
+		width: 40px;
+	}
+	.header1 {
+		font-size: 18px;
+	}
+	.header2 {
+		font-size: 13px;
+	}
+	.header3 {
+		font-size: 18px;
+	}
+	.header4 {
+		font-size: 13px;
+	}
+	.userImage {
+		height: 50px;
+		width: 50px;
+		margin-top: 15px !important;
+	}
+	.logoutButton {
+		font-size: 10px;
+	}
+}

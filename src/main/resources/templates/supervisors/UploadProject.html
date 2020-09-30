@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/supervisorFragments/SupervisorLayout}">
+
+<head>
+
+</head>
+
+<body>
+	<div layout:fragment="content" class="paddingRow container-fluid"
+		id="uploadForm">
+		<form id="upload" th:action="@{/saveProject}" th:object="${project}"
+			method="post">
+
+			<div class="form-group row customUploadRow">
+				<label class="col-8 col-sm-8 col-lg-2 col-xl-2 col-form-label"
+					title="Select a title, formulate it as concise as possible max length is 255 characters">
+					Title*</label>
+				<div class="col-12 col-sm-12 col-lg-10 col-xl-10">
+					<textarea id="title" class="form-control" th:field="*{title}"> </textarea>
+					<div>
+						<font size="5" style="color: red;"
+							th:text="${#httpServletRequest.getParameter('message')}">
+						</font>
+					</div>
+					<P id="titleError" style="display: none; color: red;">Title
+						should be less than 255 characters</P>
+				</div>
+				<!--/ title form control div closing-->
+			</div>
+			<!--/ title row div closing-->
+
+			<div class="form-group row customUploadRow">
+				<label class="col-8 col-sm-8 col-lg-2 col-xl-2 col-form-label"
+					title="Describe the project in 5000 characters, include all research objectives">
+					Description*</label>
+				<div class="col-12 col-sm-12 col-lg-10 col-xl-10">
+					<textarea id="description" rows="8" class="form-control"
+						th:field="*{description}"> </textarea>
+					<P id="descriptionError" style="display: none; color: red;">Description
+						should be less than 5000 characters</P>
+				</div>
+				<!--/ description form control div closing-->
+			</div>
+			<!--/ description row div closing-->
+
+			<div class="form-group row customUploadRow">
+				<label class="col-8 col-sm-8 col-lg-2 col-xl-2 col-form-label"
+					title="Provide additional informtaion if any in 3000 characters">
+					Additional Information</label>
+				<div class="col-12 col-sm-12 col-lg-10 col-xl-10">
+					<textarea id="information" rows="5" class="form-control"
+						th:field="*{additionalInformation}"> </textarea>
+					<P id="informationError" style="display: none; color: red;">Additional
+						information should not be more than 3000 characters</P>
+				</div>
+				<!--/ additional information form control div closing-->
+			</div>
+			<!--/ additional information row div closing-->
+
+			<div class="form-group row customUploadRow">
+				<label class="col-8 col-sm-8 col-lg-2 col-xl-2 col-form-label"
+					title="Provide backgrouds for the project if any in 3000 characters">
+					Background</label>
+				<div class="col-12 col-sm-12 col-lg-4 col-xl-4">
+					<textarea id="background" rows="8" class="form-control"
+						th:field="*{background}"> </textarea>
+					<P id="backgroundError" style="display: none; color: red;">Background
+						should not be more than 3000 characters</P>
+				</div>
+				<!--/ background form control div closing-->
+				<label class="col-8 col-sm-8 col-lg-2 col-xl-2 col-form-label"
+					title="Describe the artefacts if any in 3000 characters">
+					Artefact(s)</label>
+				<div class="col-12 col-sm-12 col-lg-4 col-xl-4">
+					<textarea id="artefact" rows="8" class="form-control"
+						th:field="*{artefact}"> </textarea>
+					<P id="artefactError" style="display: none; color: red;">Artefact
+						should not be more than 3000 characters</P>
+				</div>
+				<!--/ artefact form control div closing-->
+			</div>
+			<!--/ background and artefact row div closing-->
+
+			<div class="form-group row customUploadRow" id="upload">
+				<!--/-------------------------collaboration starting----------------------->
+				<div class="col-sm-5 col-md-5 col-lg-3 col-xl-3 mb-3">
+					<div class="collaborationCSS form-group row customUploadRow">
+						<label class="col-8 col-form-label"
+							title="Check the boxes if there is any collaboration">
+							Collaboration</label>
+					</div>
+					<div>
+						<label class="col-8 col-sm-2 form-check-label"
+							title="Enter the external organisation name,max length 255 characters">
+							<input type="checkbox" class="col-sm-3 form-check-input"
+							id="externalCheckbox" onclick="displayExternalInputbox()">
+							External
+						</label> <input type="text" class="form-control" id="externalTextbox"
+							style="display: none" placeholder="External organisation name"
+							th:field="*{externalCollaboration}" />
+					</div>
+					<div>
+						<label class="col-8 col-sm-2 form-check-label"
+							title="Select the internal collaborator"> <input
+							type="checkbox" class="col-sm-3 form-check-input"
+							id="internalCheckbox" onclick="displayInternalDropdownbox()">
+							Internal
+						</label>
+						<div
+							class="dropdown bootstrap-select show-tick input-small dropup"
+							id="internalDropdownbox" style="display: none">
+							<select class="selectpicker input-small"
+								title="Select supervisors" multiple data-live-search="true"
+								id="internalDropdown" style="display: none"
+								th:field="*{internalCollaboration}">
+								<option th:each="localUser : ${userByRole}"
+									th:value="${localUser.userId}"
+									th:text="${localUser.firstName +' ' + localUser.lastName}"></option>
+
+							</select>
+						</div>
+					</div>
+				</div>
+				<!--/-------------------------collaboration ending----------------------->
+
+				<!--/-------------------------topics drop down starting----------------------->
+				<div class="col-sm-5 col-md-5 col-lg-3 col-xl- mb-3">
+					<label class="form-check-label">Topics*</label> <br> <select
+						id="topics" class="selectpicker input-small" title="select topics"
+						multiple data-live-search="true" th:field="*{topics}">
+						<option th:each="module : ${module}" th:value="${module.moduleId}"
+							th:text="${module.moduleName}"></option>
+
+					</select>
+					<P id="topicsError" style="display: none; color: red;">Please
+						fill at least one topic</P>
+
+				</div>
+				<!--/-------------------------topics drop down ending----------------------->
+
+				<!--/-------------------------previous modules drop down starting----------------------->
+				<div class="col-sm-5 col-md-5 col-lg-3 col-xl-3 mb-3">
+					<label class="form-check-label">Previous Modules</label> <br>
+					<select class="selectpicker input-small"
+						title="select previous modules" multiple data-live-search="true"
+						th:field="*{previousModules}">
+						<option th:each="module : ${module}" th:value="${module.moduleId}"
+							th:text="${module.moduleId}"></option>
+					</select>
+				</div>
+				<!--/-------------------------previous modules drop down ending----------------------->
+
+				<!--/-------------------------dissertation modules drop down starting----------------------->
+				<div class="col-sm-5 col-md-5 col-lg-3 col-xl-3 mb-3">
+					<label class="form-check-label">Dissertation Modules*</label> <br>
+					<select id="dissertationModules" class="selectpicker input-small"
+						title="select dissertation modules" multiple
+						data-live-search="true" th:field="*{dissertationModules}">
+						<option th:each="dissertationModule : ${dissertationModule}"
+							th:value="${dissertationModule.dissertationModuleId}"
+							th:text="${dissertationModule.dissertationModule}"></option>
+					</select>
+					<P id="dissertationError" style="display: none; color: red;">Please
+						fill at least one dissertation module</P>
+				</div>
+				<!--/-------------------------dissertation modules drop down ending----------------------->
+			</div>
+			<div class="row customUploadRow">
+				<div class="col-sm-12">
+					<button class="btn btn-secondary float-right" id="uploadButton">Upload</button>
+				</div>
+			</div>
+			<!--/button div closing-->
+		</form>
+		<script src="../../static/js/CurrentNavLink.js"
+			th:src="@{js/CurrentNavLink.js}"></script>
+		<script src="../../static/js/UploadProject.js"
+			th:src="@{js/UploadProject.js}"></script>
+	</div>
+
+</body>
+
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<!-- /xmlns and xmlns:th thymeleaf namespaces -->
+
+<head>
+<!--/Bootstrap links-->
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<script
+	src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+
+<!--/custom links-->
+<link rel="stylesheet" href="css/login.css" type="text/css" media="all" />
+<title>StudentProjectRecommenderSystem</title>
+</head>
+
+<body>
+	<div class="container-fluid" id="maindiv">
+		<!--/main div starting-->
+
+		<div class="row">
+			<img id="redbg" class="img-fluid" src="images/redbg.png" />
+			<!--/redbanner-->
+			<p class="container-fluid" id="project-blog">CS Project Blog</p>
+			<!--/main header-->
+			<p class="container-fluid" id="university-p-tag">University of St
+				Andrews</p>
+			<!--/sub header-->
+		</div>
+		<!--/row div closing-->
+
+		<div class="row justify-content-md-center">
+			<img class="img-fluid" src="images/StAndrews.jpg" />
+			<!--/st andrews logo-->
+		</div>
+		<!--/row div closing-->
+
+		<form method="post" th:action="@{/login}">
+			<!--/fprm tag begining-->
+
+			<div class="row justify-content-md-center">
+				<div class="col-lg-4 col-lg-offset-4">
+					<div class="form-group">
+						<label>CS User name</label>
+						<!--/CS username label-->
+						<input type="text" class="form-control" id="inputbox"
+							name="username" />
+						<!--/input box for username-->
+					</div>
+					<!-- /username form group closing -->
+				</div>
+				<!--/col div closing-->
+			</div>
+			<!--/row div closing-->
+
+			<div class="row justify-content-md-center">
+				<div class="col-lg-4 col-lg-offset-4">
+					<div class="form-group">
+						<label>CS Password</label>
+						<!--/CS password label-->
+						<input type="password" class="form-control" id="passwordbox"
+							name="password" />
+						<!--/password box-->
+					</div>
+					<!-- /username form group closing -->
+				</div>
+				<!--/col div closing-->
+			</div>
+			<!--/row div closing-->
+
+			<div class="row justify-content-md-center">
+				<div class="col-lg-4 col-lg-offset-4">
+					<div class="form-group form-check">
+						<input type="checkbox" name="remember-me" class="form-check-input" />
+						<!--/checkbox-->
+						<label class="form-check-label">Remember me</label> <br> <br>
+						<!--/label for checkbox-->
+						<div align="center" th:if="${param.error}">
+							<!--/error div beginning-->
+							<p style="font-size: 20; color: red;">Sorry, you have entered
+								invalid username or password.</p>
+						</div>
+						<!-- /error div closing -->
+					</div>
+					<!-- /checkbox div closing -->
+					<!-- /username form group closing -->
+				</div>
+				<!--/col div closing-->
+			</div>
+			<!--/row div closing-->
+
+			<div class="text-center">
+				<input type="submit" value="Log in" class="btn btn-primary btn-lg"
+					id="submitbutton">
+				<!--/submit button-->
+			</div>
+			<!--/row div closing-->
+		</form>
+		<!--/form tag closing-->
+	</div>
+	<!--/main div closing-->
+</body>
+<!--/body clsoing-->
+
+</html>
+<!--/html closing-->

@@ -1,0 +1,28 @@
+<!--/ common sidebar of the student perspective which will be placed in asdie section of layout page-->
+
+<section th:fragment="sidebar" xmlns:th="http://www.w3.org/1999/xhtml">
+	<nav class="navbar">
+		<!--/bootstrap class-->
+		<ul class=" navbar-nav ">
+			<!--/bootstrap class-->
+			<li class="nav-item " data-tooltip="Your Dashboard "><a
+				href="/dashboard " id="home" class="nav-link "> <i
+					class="fas fa-home "></i></a></li>
+			<li class="nav-item " data-tooltip="Saved Projects "><a
+				href="/savedProjects " id="heart" class="nav-link "> <i
+					class="fas fa-heart "></i></a></li>
+			<li class="nav-item " data-tooltip="List of All Projects "><a
+				href="/allProjects " id="list" class="nav-link "> <i
+					id="listicon" class="fas fa-list "></i></a></li>
+			<li class="nav-item " data-tooltip="List of All Supervisors "><a
+				href="/supervisors " class="nav-link" id="users"> <i
+					class="fas fa-users "></i></a></li>
+			<li class="nav-item " data-tooltip="Project Proposal "><a
+				href="/projectProposal " id="pencil" class="nav-link "> <i
+					class="fas fa-pencil-alt "></i></a></li>
+		</ul>
+		<!--/navbar-nav ul closing-->
+	</nav>
+	<!--/nav tag closing-->
+</section>
+<!-- /section tag closing -->

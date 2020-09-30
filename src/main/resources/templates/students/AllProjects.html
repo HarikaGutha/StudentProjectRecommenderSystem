@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+	layout:decorate="~{fragments/studentFragments/StudentLayout}">
+
+<head>
+</head>
+
+<body onload="myFunction()">
+	<div layout:fragment="content" class="container-fluid">
+		<div class="filterClass row" id="filters">
+			<div class="col-6 col-md-3">
+				<label>Currently Available Projects</label> <br> <input
+					id="visibleAvailable" type="checkbox" class="col"
+					data-toggle="toggle" data-onstyle="primary" data-offstyle="danger"><br>
+			</div>
+			<!--/currently available filter div closing-->
+			<div class="col-5 col-md-3">
+				<label>Historically Conducted</label> <br> <input
+					id="visibleHistoric" type="checkbox" class="col"
+					data-toggle="toggle" data-onstyle="primary" data-offstyle="danger"><br>
+			</div>
+			<!--/historically conducted idv closing-->
+			<div class="col-6 col-md-3">
+				<label>Dissertation Category</label> <br> <select
+					id="visibleDissertaionModules" class="selectpicker input-small"
+					multiple data-live-search="true"
+					th:onchange="filterBasedOnVisibleDissertationModules()"
+					title="All Categories">
+					<option th:each="dissertationModule : ${dissertationModule}"
+						th:value="${dissertationModule.dissertationModuleId}"
+						th:text="${dissertationModule.dissertationModule}"></option>
+				</select>
+			</div>
+			<!--/dissertation category div closing-->
+			<div class="buttonCol col-12 col-md-3 ">
+				<button th:onclick="displayAllFilters()" id="allFiltersButton"
+					class="filterButton btn btn-primary float-right">View All
+					Filters</button>
+			</div>
+		</div>
+		<div style="display: none" id="allFilters">
+			<div class="filterClass container-fluid">
+				<div class="hiddenRow row">
+					<div class="col-12 col-sm-4 col-lg-4 col-xl-4 pt-3">
+						<label>Dissertation Category</label> <br> <select
+							id="hiddenDissertationCategories"
+							class="selectpicker input-small" multiple data-live-search="true"
+							title="All Categories">
+							<option th:each="dissertationModule : ${dissertationModule}"
+								th:value="${dissertationModule.dissertationModuleId}"
+								th:text="${dissertationModule.dissertationModule}"></option>
+						</select>
+					</div>
+					<!-- /Dissertation Category col closing -->
+
+					<div class="col-12 col-sm-4 col-lg-4 col-xl-4 pt-3">
+						<label>Currently Available Projects</label> <br> <input
+							id="hiddenAvailable" th:onclick="available()" type="checkbox"
+							class="col" data-toggle="toggle" data-onstyle="primary"
+							data-offstyle="danger"><br> <br>
+						<P id="availableInfo" class="info"
+							style="display: none; color: red;">You cannot toggle
+							currently available and historic at the same time</P>
+					</div>
+					<!-- /Currently Available Projects col closing -->
+
+					<div
+						class="customSearch col-12 col-sm-4 col-lg-4 col-xl-4 input-group md-form form-sm form-2 pt-3">
+						<input th:onkeyup="search()" id="hiddenSearch" type="text"
+							class="form-control my-0 py-1 amber-border"
+							placeholder="Search by title" aria-label="Search" />
+					</div>
+				</div>
+				<!-- /row1 closing -->
+
+				<div class="hiddenRow row">
+					<div class="col-12 col-sm-4 col-lg-4 col-xl-4 pt-3">
+						<label class="form-check-label">Date Posted</label> <br> <select
+							class="selectpicker input-small" id="hiddenDateSelect"
+							multiple="multiple" data-live-search="true" title="All Date">
+							<th:block th:each="date : ${datePosted}">
+								<option th:each="entry : ${date}"
+									th:text="${entry.key + ' ' + '('+entry.value+')'}">
+						</select>
+					</div>
+					<!-- /date col closing -->
+
+					<div class="col-12 col-sm-4 col-lg-4 col-xl-4 pt-3">
+						<label class="form-check-label">Topics </label> <br> <select
+							id="hiddenTopicsSelect" class="selectpicker input-small"
+							multiple="multiple" data-live-search="true" title="All topics">
+							<option th:each="module : ${module}"
+								th:value="${module.moduleId}" th:text="${module.moduleName}"></option>
+
+						</select>
+					</div>
+					<!-- /topics div closing -->
+					<div class="col-12 col-sm-4 col-lg-4 col-xl-4 pt-3">
+						<label class="form-check-label">Relevant Modules</label> <br>
+						<select class="selectpicker input-small"
+							title="All relevant modules" id="hiddenRelevantModules" multiple
+							data-live-search="true">
+							<option th:each="module : ${module}"
+								th:value="${module.moduleId}" th:text="${module.moduleId}"></option>
+						</select>
+					</div>
+					<!-- /previous modules div closing -->
+				</div>
+				<!-- /row2 closing -->
+
+				<div class="hiddenRow row">
+					<div class="col-12 col-sm-4 col-lg-4 col-xl-4 pt-3">
+						<label class="form-check-label">Supervisors</label> <br> <select
+							class="selectpicker input-small" id="hiddenSupervisors" multiple
+							data-live-search="true" title="All supervisors">
+							<option th:each="supervisor : ${allSupervisors}"
+								th:value="${supervisor.userId}"
+								th:text="${supervisor.firstName +' ' + supervisor.lastName}"></option>
+
+						</select>
+					</div>
+					<!-- /supervisor col closing -->
+
+					<div class="col-12 col-sm-4 col-lg-4 col-xl-4 pt-3">
+						<label>Historically Conducted</label> <br> <input
+							id="hiddenHistoric" type="checkbox" class="col"
+							th:onclick="historic()" data-toggle="toggle"
+							data-onstyle="primary" data-offstyle="danger"><br> <br>
+						<P id="historicInfo" class="info"
+							style="display: none; color: red;">You cannot toggle
+							currently available and historic at the same time</P>
+					</div>
+					<!-- /Historically Conducted col closing -->
+				</div>
+				<!-- /row3 closing -->
+
+				<div class="row">
+					<div class="filterButtonCol col align-self-end">
+						<button th:onclick="hideAllFilters()" id="applyFilters"
+							class="filterButton btn btn-primary float-right">Apply
+							Filters</button>
+					</div>
+					<!-- /col closing -->
+				</div>
+			</div>
+			<!-- /filterClass closing -->
+		</div>
+		<!-- /display none div closing -->
+		<br>
+
+		<div id="allProjects" class="allProjects"
+			th:if="${#lists.size(project) > 0}" th:each="project : ${project}">
+			<div class="projectRow row">
+				<div class="col-12 col-lg-9">
+					<span
+						th:switch="${project.projectState == null ? '' :project.projectState.state}"
+						th:title="${project.projectState.state}"> <i
+						th:case="Available" class="stateCircle fas fa-circle"
+						style="color: green"></i> <i th:case="Taken"
+						class="stateCircle fas fa-circle" style="color: red"></i> <i
+						th:case="Historic" class="stateCircle fas fa-circle"
+						style="color: gray"></i>
+					</span>
+					<p style="display: inline">
+						<a
+							th:href="@{/individualProjectDescription(id=${project.projectId})}"
+							class="projectTitle" th:value="${project.projectId}"
+							th:text="${project.title}"
+							title="Click the title to view description"></a> <span
+							th:if="${project.isSavedProject}"> <i
+							th:id="save +${project.projectId}"
+							th:onclick=" |save('${project.projectId}')| "
+							style="color: orange" class="fa fa-heart fa-lg pl-4 saveSymbol">
+						</i>
+						</span> <span th:unless="${project.isSavedProject}"> <i
+							th:id="save +${project.projectId} "
+							th:onclick=" |save('${project.projectId}')| "
+							style="color: white" class="fa fa-heart fa-lg pl-4 saveSymbol"
+							aria-hidden="true"> </i>
+						</span>
+					</p>
+					<!-- /title closing -->
+					<p class="projectDescription" th:value="${project.projectId}"
+						th:text="${project.description}"></p>
+					<!-- /description closing -->
+
+				</div>
+				<!-- /col div closing -->
+				<div id="supervisorImageDiv" class="col-12 col-lg-3">
+
+					<a th:href=@{/supervisorProfile(id=${project.userId.userId})}>
+						<img id="allProjectsImages" th:each="imageMap: ${imageMap}"
+						th:if="${project.userId == imageMap.key}"
+						th:src="@{'/userImages/' + ${imageMap.value}}" /> <br>
+					</a> <a type="button" class="nameButton btn btn-secondary"
+						th:title="${project.userId.email}"
+						th:text="${project.userId.firstName} + ' ' + ${project.userId.lastName}"
+						th:href=@{/supervisorProfile(id=${project.userId.userId})}></a>
+				</div>
+			</div>
+			<!-- /project row div closing -->
+			<div class="projectDetailsForFilters customAllProjectBg row">
+				<div class="categoryDetails col-12 col-lg-4 col-xl-4">
+					<span class="boldLook">Dissertation Category:</span>
+					<p style="display: inline-block" class="dissertationModules"
+						th:each="dissertationModule, iterStat : ${project.dissertationModules}">
+						<span
+							th:text="!${iterStat.last} ? ${dissertationModule.dissertationModule} + ',' : ${dissertationModule.dissertationModule}"></span>
+					</p>
+				</div>
+				<!-- /Dissertation Category closing -->
+				<div class="col-12 col-lg-4 col-xl-4">
+					<span class="boldLook">Topic Area:</span>
+					<p style="display: inline-block" class="topicAreas"
+						th:each="topics, iterStat : ${project.topics}">
+						<span
+							th:text="!${iterStat.last} ? ${topics.moduleName} + ',' : ${topics.moduleName}"></span>
+					</p>
+				</div>
+				<!-- /topic area closing -->
+				<div class="col-12 col-lg-4 col-xl-4">
+					<span class="boldLook">Relevant Modules:</span>
+					<p th:if="${#lists.size(project.previousModules) > 0}"
+						style="display: inline-block" class="relevantModules"
+						th:each="previousModules, iterStat : ${project.previousModules}">
+						<span
+							th:text="!${iterStat.last} ? ${previousModules.moduleId} + ',' : ${previousModules.moduleId}"></span>
+					</p>
+					<p th:if="${#lists.size(project.previousModules) <= 0}"
+						class="relevantModules" style="display: inline-block">
+						<span>No Relevant Modules</span>
+					</p>
+				</div>
+				<!--  /Relevant Modules closing-->
+				<div class="col-12 col-lg-4 col-xl-4">
+					<span class="boldLook">Date Posted:</span>
+					<p style="display: inline-block" class="datePosted"
+						th:value="${project.datePosted}"
+						th:text="${#dates.format(project.datePosted, 'dd-MMMM-yyyy')}"></p>
+				</div>
+				<!--  /date posted closing-->
+			</div>
+			<!-- /sub row closing -->
+			<br>
+		</div>
+		<!-- /main row closing -->
+		<div class="noProjects" th:if="${#lists.size(project) <= 0}">No
+			Projects Available</div>
+		<input type="hidden" name="selectedModuleId" id="selectedModuleId"
+			th:value="${moduleId}"> <input type="hidden"
+			name="isFilterApplied" id="isFilterApplied"
+			th:value="${isFilterApplied}"> <br>
+		<script src="../../static/js/AllProjects.js"
+			th:src="@{js/AllProjects.js}"></script>
+		<script src="../../static/js/SaveProject.js"
+			th:src="@{js/SaveProject.js}"></script>
+		<script src="../../static/js/CurrentNavLink.js"
+			th:src="@{js/CurrentNavLink.js}"></script>
+		<script>
+            function myFunction() {
+                if (document.getElementById('isFilterApplied').value == 'yes') {
+                    let element = document.getElementById('hiddenTopicsSelect');
+                    element.value = document.getElementById('selectedModuleId').value;
+                    hideAllFilters();
+                }
+            }
+        </script>
+	</div>
+	<br>
+</body>
+
+</html>

@@ -1,0 +1,124 @@
+<html xmlns:layout="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<!--/ thymeleaf namespace and security-->
+
+<head th:replace="fragments/Header ::header"></head>
+<!--/head will be replaced by the content with id header in fragments folder header file-->
+
+<body>
+	<div class="container-fluid my-container">
+		<header class="row my-row">
+			<div id="headers" class="col-9 my-col"
+				th:if="${#httpServletRequest.requestURI == '/dashboard'}">
+				<!--/header will be the following if the page is dashboard-->
+				<!--     <p class="header1" sec:authorize="isAuthenticated()">
+                Welcome <span sec:authentication="name"></span></p>-->
+				<P class="header1">
+					Welcome <span th:text=${username}></span>
+				</P>
+				<p class="header2">This is your dashboard</p>
+			</div>
+			<!-- /dashboard if closing -->
+
+			<div id="headers" class="col-9 my-col"
+				th:if="${#httpServletRequest.requestURI == '/savedProjects'}">
+				<!--/header will be the following if the page is saved projects-->
+				<p class="header1">All your saved projects</p>
+				<p class="header2">To look at, track it's state, and directly
+					apply for</p>
+			</div>
+			<!-- /saved projects if closing -->
+
+			<div id="headers" class="col-9 my-col"
+				th:if="${#httpServletRequest.requestURI == '/allProjects'} OR
+        ${#httpServletRequest.requestURI == '/project'}">
+				<!--/header will be the following if the page is all projects-->
+				<p class="header1">All available, taken, and historically
+					conducted projects</p>
+				<p class="header2">To get inspiration, apply for available
+					projects and be sure that something has been assigned</p>
+			</div>
+			<!-- /all projects if closing -->
+
+			<div id="headers" class="col-9 my-col"
+				th:if="${#httpServletRequest.requestURI == '/supervisors'}
+        OR ${#httpServletRequest.requestURI == '/supervisor'}">
+				<!--/header will be the following if the page is supervisors-->
+				<p class="header1">All supervisors</p>
+				<p class="header2">To get an overview of who could supervise
+					what</p>
+			</div>
+			<!-- /supervisors if closing -->
+
+			<div id="headers" class="col-9 my-col"
+				th:if="${#httpServletRequest.requestURI == '/projectProposal'} OR
+        ${#httpServletRequest.requestURI == '/submitProject'}">
+				<!--/header will be the following if the page is project proposal-->
+				<p class="header1">Own project proposal</p>
+				<p class="header2">Have a good idea, submit your proposal</p>
+			</div>
+			<!-- /project proposal if closing -->
+
+			<div id="headers" class="col-9 my-col"
+				th:if="${#httpServletRequest.requestURI == '/submitProposal'}">
+				<!--/header will be the following if the page is submit proposal-->
+				<p class="header1">Own project proposal</p>
+				<p class="header2">Please fill all the mandatory fields</p>
+			</div>
+			<!-- /project proposal if closing -->
+
+			<div id="headers" class="col-9 my-col"
+				th:if="${#httpServletRequest.requestURI == '/individualProjectDescription'} OR 
+        ${#httpServletRequest.requestURI == '/nextProjectDescription'} OR
+        ${#httpServletRequest.requestURI == '/previousProjectDescription'}">
+				<!--/header will be the following if the page is project proposal-->
+				<p class="header1">Project description page</p>
+				<p class="header2">Save a project, contact supervisor, and sign
+					up for the project</p>
+			</div>
+			<!-- /project description if closing -->
+
+			<div id="headers" class="col-9 my-col"
+				th:if="${#httpServletRequest.requestURI == '/supervisorProfile'}">
+				<!--/header will be the following if the page is submit proposal-->
+				<p class="header1">Overview of Supervisor</p>
+				<p class="header2">View projects and research publications</p>
+			</div>
+			<!-- /supervisor profile if closing -->
+
+			<div class="col-3">
+				<img class="userImage" th:src="@{'/userImages/' + ${userImage}}" />&nbsp;
+				<span class="pt-2"> <a type="button" class="logoutButton"
+					th:href="@{/logout}">&nbsp;&nbsp;Log Out&nbsp;&nbsp;</a></span>
+			</div>
+		</header>
+		<!--/header closing-->
+		<div class="row  my-row">
+			<div class="col-2 col-sm-2 col-md-2 col-lg-1 col-xl-1 my-col">
+				<aside class="main-sidebar">
+					<!--/aside will be replaced by StudentSidebar in fragments folder/students-->
+					<div th:replace="fragments/studentFragments/StudentSidebar"></div>
+				</aside>
+				<!--/aside closing-->
+			</div>
+			<!-- /aside col closing -->
+			<div class="col my-col">
+				<main>
+					<div layout:fragment="content"></div>
+					<!--/footer icon will be added in the body 
+            and this content is replaced by content with id footer in fragments folder footer file-->
+					<!--  <div th:replace="fragments/Footer::footer"></div> -->
+				</main>
+				<!--/main closing-->
+			</div>
+			<!-- /content col div closing -->
+		</div>
+		<!-- /side bar and content row div closing -->
+	</div>
+	<!-- /container div closing -->
+</body>
+<!--/body closing-->
+
+</html>
+<!--/html closing-->

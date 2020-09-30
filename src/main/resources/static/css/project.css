@@ -1,0 +1,164 @@
+@charset "UTF-8";
+
+/**
+* styles for tags with class projectView
+*/
+.projectView {
+	background-color: #e8f0f8;
+	height: fit-content;
+	border-radius: 7px;
+	padding-bottom: 30px;
+}
+
+/**
+* styles for tags with class projectViewChildDiv
+*/
+.projectViewChildDiv {
+	background-color: lightgray;
+	width: 100%;
+	border-radius: 7px;
+	font-family: poppins;
+	font-size: 20px;
+	font-weight: bold;
+	text-align: center;
+}
+
+/**
+* styles for tags with class backgroundDiv
+*/
+.backgroundDiv {
+	padding-left: 0px !important;
+}
+
+/**
+* styles for tags with class artefactDiv
+*/
+.artefactDiv {
+	padding-right: 0px !important;
+}
+
+/**
+* styles for tags with class textBody
+*/
+.textBody {
+	font-size: 20px;
+	font-family: poppins;
+	padding-top: 10px;
+	word-wrap: break-word;
+}
+
+/**
+* styles for tags with class iconPadding
+*/
+.iconPadding {
+	padding-top: 1%;
+	padding-left: 1%;
+	padding-right: 1%;
+}
+
+/**
+* styles for tags with class saveSymbol
+*/
+.saveSymbol {
+	color: white;
+	-webkit-text-stroke-width: 2px;
+	-webkit-text-stroke-color: orange;
+	cursor: pointer;
+}
+
+/**
+* styles for tags with class projectTitleDiv
+*/
+.projectTitleDiv {
+	padding-top: 1%;
+	padding-bottom: 1%;
+}
+
+/**
+* styles for tag with id supervisorImage
+*/
+#supervisorImage {
+	width: 65px;
+	padding-top: 10px;
+	border-radius: 50%;
+}
+
+/**
+* styles for tags with class customProjectBackgroundClass
+*/
+.customProjectBackgroundClass {
+	background-color: white;
+	padding-bottom: 20px;
+}
+
+/**
+* styles for tags with class projectDetails
+*/
+.projectDetails {
+	background-color: #e8f0f8;
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+	padding-top: 10px;
+}
+
+/**
+* styles for tags with class navigationButtons
+*/
+.navigationButtons {
+	text-decoration: none;
+	color: white !important;
+	font-family: poppins !important;
+	font-size: 20px !important;
+	font-weight: bold !important;
+	border-radius: 20px !important;
+	background-color: navy !important;
+	width: 75% !important;
+}
+
+/**
+* styles for tags with class navigationButtons on hover
+*/
+.navigationButtons:hover {
+	text-decoration: none;
+	color: white !important;
+}
+
+/**
+* styles for tags with class buttonsRow
+*/
+.buttonsRow {
+	text-align: center !important;
+	padding-top: 10px !important;
+	background-color: #e8f0f8;
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+}
+
+/**
+* styles for tags with class projectBoldLook
+*/
+.projectBoldLook {
+	font-family: poppins;
+	font-size: 20px;
+	font-weight: bold;
+}
+
+/**
+* styles for tags with class projectDetailsPTag
+*/
+.projectDetailsPTag {
+	font-size: 20px;
+	font-family: poppins;
+}
+
+/**
+*overrides the above properties if screen max-width is 768px.
+*/
+@media screen and (max-width:768px) {
+	.backgroundDiv {
+		padding-right: 0px !important;
+	}
+	.artefactDiv {
+		padding-left: 0px !important;
+	}
+}
